@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>TrustProtocol — La garde souveraine de vos agents IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:#FAFAF7;color:#16181A;font-family:'DM Sans',system-ui,sans-serif;font-weight:400;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+em{font-style:italic;color:#3B6E3F}
+:root{
+--bg:#FAFAF7;--bg2:#F1EFE9;--paper:#fff;--line:#E2DED5;--line2:#D4CFC4;
+--ink:#16181A;--ink2:#4A4742;--mut:#8A847A;
+--fern:#3B6E3F;--fern2:#4F8A4D;--fern-lt:#A8C99A;--fern-bg:#EEF3E9;--fern-dp:#244A26;
+--red:#B23A3A;--amb:#B07A2E;--gold:#A8843E;
+--sh-sm:0 1px 2px rgba(22,24,26,.04);
+--sh-md:0 4px 24px rgba(36,74,38,.07);
+--sh-lg:0 12px 48px rgba(36,74,38,.10);
+}
+
+/* ===== GATE ===== */
+#gate{position:fixed;inset:0;background:#FAFAF7;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px}
+.gate-card{width:100%;max-width:380px;padding:44px 36px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-lg);text-align:center;border-radius:2px}
+.gate-card svg{margin:0 auto 22px;display:block}
+.gate-t{font-family:'Fraunces',serif;font-size:24px;font-weight:400;color:var(--ink);margin-bottom:6px}
+.gate-s{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--mut);margin-bottom:30px}
+#pw{width:100%;padding:13px 16px;border:1px solid var(--line2);background:var(--bg);font-family:'DM Mono',monospace;font-size:13px;color:var(--ink);outline:none;margin-bottom:12px;border-radius:2px;transition:border-color .2s}
+#pw:focus{border-color:var(--fern)}
+#gerr{font-family:'DM Mono',monospace;font-size:10px;color:var(--red);min-height:16px;margin-bottom:8px}
+.gate-btn{width:100%;padding:14px;background:var(--fern);color:#fff;border:none;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background .2s}
+.gate-btn:hover{background:var(--fern-dp)}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,5vw,64px);transition:all .35s cubic-bezier(.4,0,.2,1)}
+nav.sc{background:rgba(250,250,247,.85);border-bottom:1px solid var(--line);backdrop-filter:blur(20px) saturate(1.2);-webkit-backdrop-filter:blur(20px) saturate(1.2)}
+.nb{display:flex;align-items:center;gap:11px}
+.nb-t{font-family:'Fraunces',serif;font-size:17px;font-weight:500;letter-spacing:-.01em;color:var(--ink)}
+.nb-t span{color:var(--fern)}
+.nl{display:flex;gap:34px}
+.nl a{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);transition:color .2s;position:relative}
+.nl a::after{content:'';position:absolute;left:0;bottom:-5px;width:0;height:1px;background:var(--fern);transition:width .25s}
+.nl a:hover{color:var(--ink)}
+.nl a:hover::after{width:100%}
+.ncta{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--fern);color:#fff;padding:11px 22px;border-radius:2px;transition:all .2s}
+.ncta:hover{background:var(--fern-dp);transform:translateY(-1px);box-shadow:var(--sh-md)}
+
+/* ===== SHARED ===== */
+.wrap{max-width:1160px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+.eyebrow{display:inline-flex;align-items:center;gap:11px;margin-bottom:22px}
+.eyebrow .ln{width:28px;height:1px;background:var(--fern)}
+.eyebrow span{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--fern)}
+.h2{font-family:'Fraunces',serif;font-weight:400;line-height:1.08;letter-spacing:-.02em;font-size:clamp(30px,4.4vw,52px)}
+.lead{font-size:clamp(16px,2vw,18px);font-weight:300;color:var(--ink2);line-height:1.7;max-width:560px}
+.divln{height:1px;background:linear-gradient(90deg,transparent,var(--line2),transparent);border:none}
+
+/* ===== HERO ===== */
+.hero{position:relative;min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;padding-top:68px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(ellipse 80% 50% at 75% 30%,rgba(168,201,154,.18),transparent 60%),
+  radial-gradient(ellipse 60% 40% at 10% 80%,rgba(168,201,154,.12),transparent 55%)}
+.hero-grid-lines{position:absolute;inset:0;z-index:0;opacity:.4;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000,transparent 75%)}
+.hero-l{position:relative;z-index:2;padding:60px clamp(20px,5vw,64px) 60px}
+.hero-r{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;padding:40px clamp(20px,4vw,48px)}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(40px,5.6vw,74px);font-weight:300;line-height:1.02;letter-spacing:-.03em;margin-bottom:26px}
+.hero h1 em{font-weight:400}
+.hero-sub{font-size:clamp(16px,2vw,19px);font-weight:300;color:var(--ink2);line-height:1.65;max-width:480px;margin-bottom:38px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px}
+.btn-p{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;background:var(--fern);color:#fff;padding:16px 30px;border:none;cursor:pointer;border-radius:2px;transition:all .2s;position:relative;overflow:hidden}
+.btn-p::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transition:none}
+.btn-p:hover{background:var(--fern-dp);transform:translateY(-1px);box-shadow:var(--sh-md)}
+.btn-p:hover::before{left:150%;transition:left .7s ease}
+.btn-o{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--ink2);padding:16px 30px;border:1px solid var(--line2);border-radius:2px;transition:all .2s}
+.btn-o:hover{border-color:var(--fern);color:var(--fern);background:var(--fern-bg)}
+.hero-trust{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.hero-trust-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.hero-badges{display:flex;gap:8px;flex-wrap:wrap}
+.tbadge{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--ink2);background:var(--paper);border:1px solid var(--line);padding:5px 11px;border-radius:2px}
+
+/* ===== DASHBOARD CARD (hero right) ===== */
+.dash{width:100%;max-width:440px;background:var(--paper);border:1px solid var(--line);border-radius:6px;box-shadow:var(--sh-lg);overflow:hidden;position:relative}
+.dash::before{content:'';position:absolute;inset:0;border-radius:6px;padding:1px;background:linear-gradient(135deg,rgba(79,138,77,.4),transparent 40%,transparent 60%,rgba(79,138,77,.2));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;animation:beam 6s linear infinite;background-size:300% 300%}
+@keyframes beam{0%{background-position:0% 0%}50%{background-position:100% 100%}100%{background-position:0% 0%}}
+.dash-h{display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid var(--line);background:var(--bg2)}
+.dash-dots{display:flex;gap:6px}
+.dd{width:10px;height:10px;border-radius:50%}
+.dd:nth-child(1){background:#E5897F}.dd:nth-child(2){background:#E5BE6F}.dd:nth-child(3){background:#7FBF87}
+.dash-live{display:flex;align-items:center;gap:7px;margin-left:auto}
+.dash-live-dot{width:7px;height:7px;border-radius:50%;background:var(--fern2);box-shadow:0 0 0 0 rgba(79,138,77,.5);animation:ring 2s infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(79,138,77,.4)}70%{box-shadow:0 0 0 6px rgba(79,138,77,0)}100%{box-shadow:0 0 0 0 rgba(79,138,77,0)}}
+.dash-live-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.dash-b{padding:18px 16px;font-family:'DM Mono',monospace;font-size:11.5px;line-height:1}
+.dash-row{display:flex;gap:10px;align-items:flex-start;padding:7px 0}
+.dash-tm{color:var(--mut);flex-shrink:0;font-size:10px}
+.dr-ok{color:var(--fern2)}.dr-wn{color:var(--amb)}.dr-er{color:var(--red)}
+.dash-msg{color:var(--ink);flex:1}
+.dchip{display:inline-block;margin-left:7px;padding:1px 7px;font-size:9px;letter-spacing:.06em;border-radius:2px;border:1px solid rgba(79,138,77,.3);background:var(--fern-bg);color:var(--fern)}
+.dchip-r{border-color:rgba(178,58,58,.3);background:#FBEEEE;color:var(--red)}
+.dash-sep{height:1px;background:var(--line);margin:10px 0}
+.dash-bud{padding:0 16px 14px}
+.dash-bud-l{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:10px;color:var(--mut);margin-bottom:8px}
+.dash-bud-l b{color:var(--amb);font-weight:500}
+.dash-bar{height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.dash-fill{height:100%;border-radius:3px;width:0;background:linear-gradient(90deg,var(--fern),var(--amb));animation:grow 2.4s cubic-bezier(.4,0,.2,1) both 1s}
+@keyframes grow{to{width:82%}}
+.dash-hash{padding:11px 16px;border-top:1px solid var(--line);background:var(--bg);font-family:'DM Mono',monospace;font-size:9px;color:var(--mut);word-break:break-all;line-height:1.5}
+.dash-hash b{color:var(--fern);font-weight:500}
+
+/* ===== LOGOS / PROOF STRIP ===== */
+.proof{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper);padding:34px 0}
+.proof-in{display:flex;align-items:center;justify-content:center;gap:clamp(24px,5vw,64px);flex-wrap:wrap}
+.proof-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut)}
+.proof-item{font-family:'Fraunces',serif;font-size:clamp(15px,2vw,19px);font-weight:400;color:var(--ink2);letter-spacing:.02em}
+
+/* ===== SECTION ===== */
+.sec{padding:clamp(70px,9vw,120px) 0}
+.sec-head{max-width:680px;margin-bottom:60px}
+.sec-head .h2{margin-bottom:18px}
+
+/* ===== BENTO FEATURES ===== */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.bcard{background:var(--paper);border:1px solid var(--line);border-radius:5px;padding:32px;position:relative;overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1)}
+.bcard:hover{border-color:var(--fern-lt);box-shadow:var(--sh-md);transform:translateY(-2px)}
+.bcard.span3{grid-column:span 3}
+.bcard.span2{grid-column:span 2}
+.bcard.span6{grid-column:span 6}
+.bcard-ic{width:42px;height:42px;border-radius:5px;background:var(--fern-bg);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.bcard-n{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--fern);margin-bottom:10px}
+.bcard-t{font-family:'Fraunces',serif;font-size:21px;font-weight:400;margin-bottom:9px;letter-spacing:-.01em}
+.bcard-d{font-size:14px;font-weight:300;color:var(--ink2);line-height:1.7}
+.bcard-wide{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.bcard-wide .bw-visual{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+.chain-link{display:flex;align-items:center;gap:6px}
+.chain-node{width:38px;height:38px;border-radius:4px;border:1px solid var(--fern-lt);background:var(--fern-bg);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;color:var(--fern)}
+.chain-arrow{color:var(--fern-lt);font-size:14px}
+
+/* ===== HOW (steps) ===== */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.step{background:var(--paper);padding:40px 32px;position:relative;transition:background .25s}
+.step:hover{background:var(--bg)}
+.step-n{font-family:'Fraunces',serif;font-size:56px;font-weight:300;color:var(--fern-lt);line-height:1;margin-bottom:18px}
+.step-t{font-family:'Fraunces',serif;font-size:20px;font-weight:400;margin-bottom:10px}
+.step-d{font-size:14px;font-weight:300;color:var(--ink2);line-height:1.7}
+
+/* ===== ATTESTATION ===== */
+.att{background:var(--bg2)}
+.att-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px);align-items:center}
+.att-bens{display:flex;flex-direction:column;gap:30px;margin-top:34px}
+.att-ben{display:flex;gap:18px;align-items:flex-start}
+.att-ben-n{font-family:'Fraunces',serif;font-size:30px;font-weight:300;color:var(--fern);opacity:.5;flex-shrink:0;line-height:1;width:34px}
+.att-ben-t{font-family:'Fraunces',serif;font-size:18px;font-weight:400;margin-bottom:6px}
+.att-ben-d{font-size:14px;font-weight:300;color:var(--ink2);line-height:1.65}
+.acard{background:var(--paper);border:1px solid var(--line);border-radius:6px;box-shadow:var(--sh-md);overflow:hidden}
+.acard-h{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;border-bottom:1px solid var(--line);background:var(--bg)}
+.acard-ht{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.acard-hb{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;color:var(--fern);background:var(--fern-bg);border:1px solid rgba(79,138,77,.25);padding:4px 10px;border-radius:2px}
+.acard-row{padding:14px 20px;border-bottom:1px solid var(--bg2)}
+.acard-row:last-child{border-bottom:none}
+.acard-l{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-bottom:5px}
+.acard-v{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink);word-break:break-all;line-height:1.5}
+.acard-v.g{color:var(--fern)}.acard-v.m{color:var(--mut)}
+
+/* ===== DEMO ===== */
+.demo-card{background:var(--paper);border:1px solid var(--line);border-radius:6px;box-shadow:var(--sh-md);overflow:hidden}
+.dscens{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+.dscen{background:var(--paper);padding:24px;cursor:pointer;border-top:2px solid transparent;transition:all .2s}
+.dscen:hover{background:var(--bg)}
+.dscen.on{background:var(--fern-bg);border-top-color:var(--fern)}
+.dscen-ic{font-size:26px;margin-bottom:13px}
+.dscen-tp{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--fern);margin-bottom:7px}
+.dscen-nm{font-family:'Fraunces',serif;font-size:16px;font-weight:400;margin-bottom:6px}
+.dscen-rk{font-family:'DM Mono',monospace;font-size:10px;color:var(--red)}
+.dscen-rk.amb{color:var(--amb)}
+.dlaunch{padding:22px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);background:var(--bg)}
+.dlaunch-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--fern);color:#fff;border:none;padding:14px 30px;cursor:pointer;border-radius:2px;transition:all .2s}
+.dlaunch-btn:hover:not(:disabled){background:var(--fern-dp)}
+.dlaunch-btn:disabled{opacity:.35;cursor:not-allowed}
+.dlaunch-h{font-family:'DM Mono',monospace;font-size:10px;color:var(--mut);letter-spacing:.04em}
+.drt{padding:22px 24px}
+.drt-st{display:flex;flex-wrap:wrap;gap:22px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:16px 20px;margin-bottom:16px}
+.drt-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-bottom:5px}
+.drt-val{font-family:'DM Mono',monospace;font-size:14px;color:var(--ink)}
+.drt-bw{flex:1;min-width:170px}
+.drt-bb{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:6px 0}
+.drt-bf{height:100%;width:0;border-radius:3px;background:var(--fern);transition:width .5s,background .5s}
+.drt-bm{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:9px;color:var(--mut)}
+.drt-badge{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:7px 15px;border-radius:2px;border:1px solid}
+.drt-badge.run{color:var(--fern);border-color:rgba(59,110,63,.3);background:var(--fern-bg)}
+.drt-badge.blk{color:var(--red);border-color:rgba(178,58,58,.3);background:#FBEEEE}
+.drt-badge.done{color:var(--fern);border-color:rgba(59,110,63,.3);background:var(--fern-bg)}
+.drt-act{border-left:2px solid var(--fern);background:var(--fern-bg);padding:13px 18px;margin-bottom:14px;border-radius:0 3px 3px 0;display:none}
+.drt-act-l{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--fern);margin-bottom:6px}
+.drt-act-t{font-size:14px;font-style:italic;color:var(--ink2)}
+.drt-blk{background:#FBEEEE;border:1px solid rgba(178,58,58,.25);border-radius:4px;padding:20px 22px;margin-bottom:16px;display:none}
+.drt-blk-t{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:9px}
+.drt-blk-h{font-family:'Fraunces',serif;font-size:19px;font-weight:400;margin-bottom:9px}
+.drt-blk-p{font-size:13.5px;font-weight:300;color:#8A4A4A;line-height:1.65}
+.dtabs{display:flex;border-bottom:1px solid var(--line)}
+.dtab{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;padding:12px 20px;cursor:pointer;color:var(--mut);transition:all .2s}
+.dtab.on{color:var(--fern);border-bottom-color:var(--fern)}
+.dpan{background:var(--paper);border:1px solid var(--line);border-top:none;max-height:330px;overflow-y:auto;display:none;border-radius:0 0 4px 4px}
+.dpan.on{display:block}
+.dlog{display:flex;gap:10px;align-items:flex-start;padding:6px 18px;border-left:2px solid transparent}
+.dlog.t-blocked{border-left-color:var(--red)}
+.dlog.t-success{border-left-color:var(--fern)}
+.dlog.t-crypto{border-left-color:var(--fern2)}
+.dlog.t-check{border-left-color:var(--mut)}
+.dlog-tm{font-family:'DM Mono',monospace;font-size:9px;color:var(--mut);flex-shrink:0;padding-top:2px}
+.dlog-m{font-family:'DM Mono',monospace;font-size:11px;line-height:1.5}
+.dlog-m.t-blocked{color:var(--red)}.dlog-m.t-success{color:var(--fern)}.dlog-m.t-crypto{color:var(--fern2)}
+.dlog-m.t-check{color:var(--mut)}.dlog-m.t-system{color:var(--ink2)}.dlog-m.t-agent{color:var(--ink2)}
+.dlog-m.t-response{font-family:'DM Sans',sans-serif;font-style:italic;font-size:13px;color:var(--ink2)}
+.dverb{display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line)}
+.dverbtn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:none;border:1px solid rgba(59,110,63,.3);color:var(--fern);padding:8px 15px;cursor:pointer;border-radius:2px;transition:all .2s}
+.dverbtn:hover{background:var(--fern-bg)}
+.dver-r{font-family:'DM Mono',monospace;font-size:11px}
+.dver-r.ok{color:var(--fern)}.dver-r.no{color:var(--red)}
+.datt{padding:15px 18px;border-bottom:1px solid var(--bg2);border-left:2px solid rgba(79,138,77,.2)}
+.datt-m{display:flex;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+.datt-id{font-family:'DM Mono',monospace;font-size:10px;color:var(--fern);letter-spacing:.06em}
+.datt-co{font-family:'DM Mono',monospace;font-size:10px;color:var(--fern2)}
+.datt-q{font-size:13px;font-style:italic;color:var(--mut);margin-bottom:8px;line-height:1.5}
+.datt-h{font-family:'DM Mono',monospace;font-size:9px;color:#B8B2A6;line-height:1.7;word-break:break-all}
+.datt-h .l{color:var(--mut)}.datt-h .v{color:var(--fern2)}
+.dctrl{display:flex;gap:12px;padding:18px 24px;border-top:1px solid var(--line);background:var(--bg);display:none}
+.dctrl-b{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:none;border:1px solid var(--line2);color:var(--mut);padding:11px 22px;cursor:pointer;border-radius:2px;transition:all .2s}
+.dctrl-b:hover{border-color:var(--fern);color:var(--fern)}
+.dctrl-b.pri{background:var(--fern);border-color:var(--fern);color:#fff}
+.dctrl-b.pri:hover{background:var(--fern-dp)}
+
+/* ===== SECTORS ===== */
+.sct-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.sct{background:var(--paper);border:1px solid var(--line);border-radius:5px;padding:30px 26px;transition:all .3s}
+.sct:hover{border-color:var(--fern-lt);box-shadow:var(--sh-md);transform:translateY(-2px)}
+.sct-ic{font-size:28px;margin-bottom:16px}
+.sct-tp{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--fern);margin-bottom:9px}
+.sct-t{font-family:'Fraunces',serif;font-size:17px;font-weight:400;margin-bottom:9px}
+.sct-d{font-size:13px;font-weight:300;color:var(--ink2);line-height:1.65}
+
+/* ===== PRICING ===== */
+.price{background:var(--bg2)}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:980px;margin:0 auto}
+.pc{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:40px 32px;position:relative;transition:all .3s}
+.pc:hover{box-shadow:var(--sh-md)}
+.pc.ft{border:1.5px solid var(--fern);box-shadow:var(--sh-lg)}
+.pc.ft::before{content:'Recommande';position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--fern);color:#fff;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:5px 16px;border-radius:0 0 4px 4px}
+.pc-l{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin-bottom:18px}
+.pc-amt{font-family:'Fraunces',serif;font-size:50px;font-weight:300;line-height:1;margin-bottom:7px}
+.pc-amt span{font-size:20px;font-family:'DM Sans',sans-serif;color:var(--mut)}
+.pc-per{font-family:'DM Mono',monospace;font-size:10px;color:var(--mut);margin-bottom:32px}
+.pc-f{display:flex;flex-direction:column;gap:13px;margin-bottom:32px}
+.pc-f li{display:flex;gap:11px;align-items:flex-start;font-size:14px;font-weight:300;color:var(--ink2);line-height:1.5}
+.pc-f li svg{flex-shrink:0;margin-top:3px}
+.pc-btn{display:block;text-align:center;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:13px;border-radius:2px;transition:all .2s}
+.pc-btn.fill{background:var(--fern);color:#fff}
+.pc-btn.fill:hover{background:var(--fern-dp)}
+.pc-btn.out{border:1px solid var(--line2);color:var(--ink2)}
+.pc-btn.out:hover{border-color:var(--fern);color:var(--fern)}
+
+/* ===== CTA ===== */
+.cta{position:relative;text-align:center;padding:clamp(80px,11vw,140px) 0;overflow:hidden}
+.cta-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(168,201,154,.2),transparent 70%)}
+.cta-seal{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:480px;height:480px;opacity:.05;z-index:0;pointer-events:none}
+.cta-in{position:relative;z-index:2}
+.cta h2{font-family:'Fraunces',serif;font-size:clamp(34px,5.4vw,62px);font-weight:300;line-height:1.05;letter-spacing:-.02em;margin-bottom:20px}
+.cta-sub{font-size:clamp(16px,2vw,19px);font-weight:300;color:var(--ink2);max-width:460px;margin:0 auto 40px;line-height:1.6}
+
+/* ===== FOOTER ===== */
+footer{border-top:1px solid var(--line);background:var(--paper)}
+.foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;padding:38px 0}
+.foot-l{display:flex;align-items:center;gap:13px}
+.foot-bt{font-family:'Fraunces',serif;font-size:16px;font-weight:500}
+.foot-bt span{color:var(--fern)}
+.foot-cp{font-family:'DM Mono',monospace;font-size:10px;color:var(--mut);margin-top:3px;letter-spacing:.04em}
+.foot-tags{display:flex;gap:8px;flex-wrap:wrap}
+.foot-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--mut);border:1px solid var(--line);padding:5px 11px;border-radius:2px}
+
+/* ===== REVEAL ===== */
+.rev{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.4,0,.2,1),transform .8s cubic-bezier(.4,0,.2,1)}
+.rev.in{opacity:1;transform:translateY(0)}
+.rd1{transition-delay:.08s}.rd2{transition-delay:.16s}.rd3{transition-delay:.24s}.rd4{transition-delay:.32s}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fu1{animation:fadeUp .9s cubic-bezier(.4,0,.2,1) both}
+.fu2{animation:fadeUp .9s cubic-bezier(.4,0,.2,1) .12s both}
+.fu3{animation:fadeUp .9s cubic-bezier(.4,0,.2,1) .24s both}
+.fu4{animation:fadeUp .9s cubic-bezier(.4,0,.2,1) .36s both}
+.fu5{animation:fadeUp .9s cubic-bezier(.4,0,.2,1) .48s both}
+
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+
+@media(max-width:920px){
+  .nl{display:none}
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-l{padding:90px 20px 30px}
+  .hero-r{padding:0 20px 50px}
+  .hero-grid-lines{background-size:48px 48px}
+  .bento{grid-template-columns:1fr}
+  .bcard.span3,.bcard.span2,.bcard.span6{grid-column:span 1}
+  .bcard-wide{grid-template-columns:1fr;gap:24px}
+  .steps{grid-template-columns:1fr}
+  .att-grid{grid-template-columns:1fr;gap:36px}
+  .dscens{grid-template-columns:1fr}
+  .sct-grid{grid-template-columns:repeat(2,1fr)}
+  .pg{grid-template-columns:1fr;max-width:400px}
+  .foot{flex-direction:column;text-align:center}
+  .proof-in{gap:18px}
+}
+@media(max-width:480px){
+  .sct-grid{grid-template-columns:1fr}
+  .drt-st{gap:14px}
+}
+
+/* ===== POURQUOI MAINTENANT ===== */
+.why{background:var(--ink);}
+.why .h2,.why em{color:#fff}
+.why .lead{color:rgba(255,255,255,.6)}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.why-card{border:1px solid rgba(255,255,255,.08);padding:32px 28px;border-radius:5px;transition:border-color .3s}
+.why-card:hover{border-color:rgba(168,201,154,.3)}
+.why-card-n{font-family:'DM Mono',monospace;font-size:32px;font-weight:400;color:var(--fern-lt);opacity:.5;margin-bottom:14px;line-height:1}
+.why-card-t{font-size:17px;font-weight:500;color:#fff;margin-bottom:9px}
+.why-card-d{font-size:14px;font-weight:300;color:rgba(255,255,255,.5);line-height:1.65}
+
+/* ===== ARCHITECTURE ===== */
+.arch-wrap{background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:40px;overflow-x:auto}
+.arch{display:flex;flex-direction:column;align-items:center;gap:0;font-family:'DM Mono',monospace;font-size:12px;max-width:520px;margin:0 auto}
+.arch-node{width:100%;padding:14px 24px;border:1px solid var(--line2);border-radius:4px;background:var(--paper);text-align:center;position:relative}
+.arch-node.hl{border-color:var(--fern);background:var(--fern-bg)}
+.arch-node-l{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fern);margin-bottom:4px}
+.arch-node-t{font-size:13px;color:var(--ink);font-weight:500}
+.arch-arrow{display:flex;flex-direction:column;align-items:center;padding:6px 0;color:var(--fern-lt)}
+.arch-arrow span{font-size:18px;line-height:1}
+.arch-arrow small{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+
+/* ===== PROOF / SOCIAL ===== */
+.proof2{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:52px 0}
+.proof2-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:900px;margin:0 auto}
+.proof2-card{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:28px 24px}
+.proof2-quote{font-size:15px;font-style:italic;color:var(--ink2);line-height:1.65;margin-bottom:20px}
+.proof2-src{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--mut)}
+.proof2-src b{color:var(--fern);font-weight:500}
+
+/* ===== COMPAT STRIP ===== */
+.compat{display:flex;align-items:center;justify-content:center;gap:clamp(20px,4vw,48px);flex-wrap:wrap;padding:28px 0;border-top:1px solid var(--line)}
+.compat-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.compat-item{font-family:'DM Mono',monospace;font-size:12px;color:var(--ink2);padding:6px 14px;border:1px solid var(--line);border-radius:2px}
+
+@media(max-width:920px){
+.why-grid{grid-template-columns:1fr}
+.proof2-grid{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<div id="gate">
+<div class="gate-card">
+<svg width="38" height="38" viewBox="0 0 40 40" fill="none"><polygon points="20,2 28,6 36,6 38,14 34,20 38,26 36,34 28,34 20,38 12,34 4,34 2,26 6,20 2,14 4,6 12,6" stroke="#3B6E3F" stroke-width="1.4" fill="none"/><circle cx="20" cy="20" r="7" stroke="#3B6E3F" stroke-width=".9" fill="none"/></svg>
+<div class="gate-t">TrustProtocol</div>
+<div class="gate-s">Acc&egrave;s priv&eacute;</div>
+<input id="pw" type="password" placeholder="Mot de passe" onkeydown="if(event.key===&quot;Enter&quot;)checkPw()">
+<div id="gerr"></div>
+<button class="gate-btn" onclick="checkPw()">Entrer</button>
+</div></div>
+<nav id="nav"><div class="wrap" style="display:flex;align-items:center;justify-content:space-between;padding-top:0;padding-bottom:0;width:100%">
+<div class="nb"><svg width="28" height="28" viewBox="0 0 40 40" fill="none"><polygon points="20,2 28,6 36,6 38,14 34,20 38,26 36,34 28,34 20,38 12,34 4,34 2,26 6,20 2,14 4,6 12,6" stroke="#3B6E3F" stroke-width="1.4" fill="none"/><circle cx="20" cy="20" r="7" stroke="#3B6E3F" stroke-width=".9" fill="none"/></svg><span class="nb-t">Trust<span>Protocol</span></span></div>
+<ul class="nl"><li><a href="#how">Fonctionnement</a></li><li><a href="#att">Attestation</a></li><li><a href="#demo">D&eacute;mo</a></li><li><a href="#prix">Tarifs</a></li></ul>
+<a href="#cta" class="ncta">Demander une d&eacute;mo</a>
+</div></nav>
+<section class="hero">
+<div class="hero-bg"></div><div class="hero-grid-lines"></div>
+<div class="hero-l">
+<div class="eyebrow fu1"><span class="ln"></span><span>Conformit&eacute; EU AI Act &middot; ISO 42001</span></div>
+<h1 class="fu2">La garde<br>souveraine de<br><em>vos agents IA.</em></h1>
+<p class="hero-sub fu3">TrustProtocol surveille, bloque et certifie cryptographiquement chaque action de vos agents IA en temps r&eacute;el. L&rsquo;infrastructure de gouvernance cryptographique pour agents IA.</p>
+<div class="hero-cta fu4"><a href="#cta" class="btn-p">Demander une d&eacute;mo &rarr;</a><a href="#demo" class="btn-o">Voir la d&eacute;mo live</a></div>
+<div class="hero-trust fu5"><span class="hero-trust-lbl">Conforme</span><div class="hero-badges"><span class="tbadge">EU AI Act</span><span class="tbadge">ISO 42001</span><span class="tbadge">SHA-256</span><span class="tbadge">SOC 2</span></div></div>
+</div>
+<div class="hero-r">
+<div class="dash fu5">
+<div class="dash-h"><div class="dash-dots"><div class="dd"></div><div class="dd"></div><div class="dd"></div></div><div class="dash-live"><div class="dash-live-dot"></div><span class="dash-live-t">Surveillance active</span></div></div>
+<div class="dash-b">
+<div class="dash-row"><span class="dash-tm">09:14</span><span class="dr-ok">&#10003;</span><span class="dash-msg">Email prospect Dupont SA<span class="dchip">&#128274; attest&eacute;</span></span></div>
+<div class="dash-row"><span class="dash-tm">09:31</span><span class="dr-ok">&#10003;</span><span class="dash-msg">Rapport TVA Q3 g&eacute;n&eacute;r&eacute;<span class="dchip">&#128274; attest&eacute;</span></span></div>
+<div class="dash-row"><span class="dash-tm">11:02</span><span class="dr-wn">&#9670;</span><span class="dash-msg" style="color:var(--amb)">Budget &agrave; 82% &mdash; alerte envoy&eacute;e</span></div>
+<div class="dash-row"><span class="dash-tm">14:55</span><span class="dr-er">&#10007;</span><span class="dash-msg"><strong style="color:var(--red)">Agent bloqu&eacute;</strong><span class="dchip dchip-r">Circuit Breaker</span></span></div>
+</div>
+<div class="dash-sep"></div>
+<div class="dash-bud"><div class="dash-bud-l"><span>Budget journalier</span><b>8.20&euro; / 10.00&euro;</b></div><div class="dash-bar"><div class="dash-fill"></div></div></div>
+<div class="dash-hash"><b>HASH</b> a3f8e2c1d94b7620f15e8a3c9d2b4f67e8a1c3d5b2f4e6a8c0d2e4f6...</div>
+</div></div></section>
+<div class="proof"><div class="wrap"><div class="proof-in">
+<span class="proof-lbl">Conforme aux standards</span>
+<span class="proof-item">EU&nbsp;AI&nbsp;Act</span>
+<span class="proof-item">ISO&nbsp;42001</span>
+<span class="proof-item">SOC&nbsp;2</span>
+<span class="proof-item">SHA-256</span>
+<span class="proof-item">RGPD</span>
+</div></div></div>
+<!-- WHY NOW -->
+<section class="sec why">
+<div class="wrap">
+<div class="sec-head rev">
+  <div class="eyebrow"><span class="ln" style="background:rgba(168,201,154,.5)"></span><span style="color:rgba(168,201,154,.8)">Pourquoi maintenant</span></div>
+  <h2 class="h2">L&rsquo;&egrave;re des agents IA<br>exige une <em>gouvernance imm&eacute;diate.</em></h2>
+  <p class="lead">Cinq forces convergent pour faire de la tra&ccedil;abilit&eacute; des agents IA une n&eacute;cessit&eacute; op&eacute;rationnelle en 2026.</p>
+</div>
+<div class="why-grid rev">
+  <div class="why-card"><div class="why-card-n">01</div><div class="why-card-t">Explosion des agents autonomes</div><div class="why-card-d">Les agents IA prennent des d&eacute;cisions, envoient des emails, passent des commandes. Sans supervision, les erreurs s&rsquo;accumulent sans trace.</div></div>
+  <div class="why-card"><div class="why-card-n">02</div><div class="why-card-t">EU AI Act &mdash; ao&ucirc;t 2026</div><div class="why-card-d">Les syst&egrave;mes &agrave; haut risque doivent disposer d&rsquo;une piste d&rsquo;audit. Sans conformit&eacute;, amendes jusqu&rsquo;&agrave; 7% du CA mondial.</div></div>
+  <div class="why-card"><div class="why-card-n">03</div><div class="why-card-t">Responsabilit&eacute; l&eacute;gale floue</div><div class="why-card-d">Quand un agent commet une erreur, qui est responsable&nbsp;? Sans registre v&eacute;rifiable, impossible de r&eacute;pondre sereinement &agrave; un litige.</div></div>
+  <div class="why-card"><div class="why-card-n">04</div><div class="why-card-t">Co&ucirc;ts API incontr&ocirc;l&eacute;s</div><div class="why-card-d">Une boucle non d&eacute;tect&eacute;e peut g&eacute;n&eacute;rer des milliers d&rsquo;appels API en quelques minutes. Les factures explosent sans avertissement.</div></div>
+  <div class="why-card"><div class="why-card-n">05</div><div class="why-card-t">Absence d&rsquo;auditabilit&eacute;</div><div class="why-card-d">Les fournisseurs IA ne conservent pas vos logs ind&eacute;finiment. Sans registre propre, vous n&rsquo;avez aucune preuve de ce qui s&rsquo;est pass&eacute;.</div></div>
+</div>
+</div>
+</section>
+
+<div class="wrap"><hr class="divln"></div>
+
+<!-- ARCHITECTURE -->
+<section class="sec" style="background:var(--bg2)">
+<div class="wrap">
+<div class="sec-head rev" style="max-width:560px">
+  <div class="eyebrow"><span class="ln"></span><span>Architecture</span></div>
+  <h2 class="h2">Comment TrustProtocol<br><em>s&rsquo;int&egrave;gre</em> dans votre stack.</h2>
+  <p class="lead" style="max-width:440px;margin-bottom:0">Une couche transparente entre vos agents et le monde ext&eacute;rieur. Z&eacute;ro modification de votre code existant.</p>
+</div>
+<div class="arch-wrap rev rd1">
+<div class="arch">
+  <div class="arch-node"><div class="arch-node-l">Votre application</div><div class="arch-node-t">Agent IA &mdash; Claude / GPT / Gemini / LangChain</div></div>
+  <div class="arch-arrow"><span>&#8595;</span><small>Chaque action intercept&eacute;e</small></div>
+  <div class="arch-node hl"><div class="arch-node-l">TrustProtocol Gateway</div><div class="arch-node-t">Policy Engine &mdash; Circuit Breaker &mdash; Attestation</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;margin:6px 0">
+    <div class="arch-node"><div class="arch-node-l">Attestation Ledger</div><div class="arch-node-t">SHA-256 cha&icirc;n&eacute;e</div></div>
+    <div class="arch-node" style="border-color:var(--red);background:#FEF8F8"><div class="arch-node-l" style="color:var(--red)">Circuit Breaker</div><div class="arch-node-t">Blocage + Alerte</div></div>
+  </div>
+  <div class="arch-arrow"><span>&#8595;</span><small>Registre immuable</small></div>
+  <div class="arch-node"><div class="arch-node-l">Journal d&rsquo;audit</div><div class="arch-node-t">EU AI Act &mdash; ISO 42001 &mdash; SOC 2</div></div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="wrap"><hr class="divln"></div>
+
+<!-- SOCIAL PROOF -->
+<section class="proof2">
+<div class="wrap">
+<div class="rev" style="text-align:center;margin-bottom:40px">
+  <div class="eyebrow" style="justify-content:center"><span class="ln"></span><span>Con&ccedil;u avec des experts</span></div>
+  <h2 class="h2" style="font-size:clamp(24px,3.5vw,42px)">Test&eacute; dans des contextes <em>professionnels r&eacute;els.</em></h2>
+</div>
+<div class="proof2-grid rev">
+  <div class="proof2-card"><div class="proof2-quote">&ldquo;La tra&ccedil;abilit&eacute; des agents IA est devenue une exigence non n&eacute;gociable pour nos clients grands comptes.&rdquo;</div><div class="proof2-src"><b>Expert conformit&eacute;</b> &mdash; Cabinet d&rsquo;audit, Strasbourg</div></div>
+  <div class="proof2-card"><div class="proof2-quote">&ldquo;L&rsquo;EU AI Act impose des obligations d&rsquo;audit pour les syst&egrave;mes &agrave; haut risque. Un registre cryptographique v&eacute;rifiable est un argument fort face aux autorit&eacute;s.&rdquo;</div><div class="proof2-src"><b>Directeur juridique</b> &mdash; ETI r&eacute;gionale</div></div>
+  <div class="proof2-card"><div class="proof2-quote">&ldquo;Nos clients demandent de prouver ce que nos agents IA ont fait. Un journal d&rsquo;audit &agrave; valeur probatoire change la conversation.&rdquo;</div><div class="proof2-src"><b>Responsable technique</b> &mdash; ESN mid-market</div></div>
+</div>
+<div class="compat rev" style="max-width:900px;margin:32px auto 0">
+  <span class="compat-lbl">Compatible</span>
+  <span class="compat-item">Claude / Anthropic</span>
+  <span class="compat-item">OpenAI / GPT</span>
+  <span class="compat-item">Gemini</span>
+  <span class="compat-item">LangChain</span>
+  <span class="compat-item">n8n</span>
+  <span class="compat-item">Make</span>
+</div>
+</div>
+</section>
+
+<div class="wrap"><hr class="divln"></div>
+
+<section class="sec" id="how"><div class="wrap">
+<div class="sec-head rev"><div class="eyebrow"><span class="ln"></span><span>Fonctionnement</span></div>
+<h2 class="h2">Un gardien <em>cryptographique</em><br>entre votre IA et le monde.</h2>
+<p class="lead">Quatre couches de protection pour &eacute;liminer les risques financiers, op&eacute;rationnels et l&eacute;gaux de vos agents IA &mdash; sans modifier votre infrastructure.</p></div>
+<div class="bento">
+<div class="bcard span3 rev"><div class="bcard-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="1.6"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6z"/></svg></div><div class="bcard-n">01</div><div class="bcard-t">Interception automatique</div><div class="bcard-d">Chaque action de votre agent passe par notre couche de v&eacute;rification avant ex&eacute;cution. Z&eacute;ro modification de votre workflow existant.</div></div>
+<div class="bcard span3 rev rd1"><div class="bcard-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div class="bcard-n">02</div><div class="bcard-t">Disjoncteur financier</div><div class="bcard-d">Budget journalier configurable par agent. D&eacute;passement d&eacute;tect&eacute; en temps r&eacute;el, coupure automatique. La facture API ne peut jamais exploser.</div></div>
+<div class="bcard span6 rev"><div class="bcard-wide"><div><div class="bcard-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="1.6"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="bcard-n">03</div><div class="bcard-t">Trust Attestation SHA-256</div><div class="bcard-d">Empreinte cryptographique cha&icirc;n&eacute;e sur chaque action. Si un seul octet est alt&eacute;r&eacute; dans les journaux, la cha&icirc;ne se brise, la rupture est d&eacute;tectable imm&eacute;diatement par tout expert technique.</div></div>
+<div class="bw-visual"><div class="chain-link"><div class="chain-node">#1</div><span class="chain-arrow">&rarr;</span><div class="chain-node">#2</div><span class="chain-arrow">&rarr;</span><div class="chain-node">#3</div><span class="chain-arrow">&rarr;</span><div class="chain-node" style="border-color:var(--fern);background:var(--fern);color:#fff">&#10003;</div></div></div>
+</div></div>
+<div class="bcard span6 rev rd1"><div class="bcard-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></div><div class="bcard-n">04</div><div class="bcard-t">Journal d&rsquo;audit l&eacute;gal &mdash; conforme EU AI Act Article 12, ISO 42001 &amp; SOC 2</div><div class="bcard-d">En cas de litige, vous prouvez exactement ce que l&rsquo;IA a fait, quand, et que personne n&rsquo;a alt&eacute;r&eacute; les preuves. La conformit&eacute; r&eacute;glementaire devient automatique.</div></div>
+</div></div></section>
+<div class="wrap"><hr class="divln"></div>
+<section class="sec att" id="att"><div class="wrap"><div class="att-grid">
+<div class="rev"><div class="eyebrow"><span class="ln"></span><span>Trust Attestation</span></div>
+<h2 class="h2">TrustProtocol est le<br><em>registre de confiance</em><br>de vos agents IA.</h2>
+<div class="att-bens">
+<div class="att-ben"><div class="att-ben-n">I</div><div><div class="att-ben-t">Valeur juridique irr&eacute;futable</div><div class="att-ben-d">Journal d&rsquo;audit &agrave; forte valeur probatoire. Toute alt&eacute;ration du registre est d&eacute;tectable imm&eacute;diatement.</div></div></div>
+<div class="att-ben"><div class="att-ben-n">II</div><div><div class="att-ben-t">Conformit&eacute; automatique</div><div class="att-ben-d">EU AI Act Art.12, ISO 42001, SOC 2 respect&eacute;s automatiquement. Vos certifications grandement facilit&eacute;es.</div></div></div>
+<div class="att-ben"><div class="att-ben-n">III</div><div><div class="att-ben-t">Souverainet&eacute; totale</div><div class="att-ben-d">L&rsquo;EU AI Act pr&eacute;voit jusqu&rsquo;&agrave; 7% du chiffre d&rsquo;affaires d&rsquo;amende sans audit immuable. TrustProtocol renforce significativement votre posture de conformit&eacute;.</div></div></div>
+</div></div>
+<div class="rev rd2"><div class="acard">
+<div class="acard-h"><span class="acard-ht">Attestation #1 &mdash; Exemple</span><span class="acard-hb">&#10003; INT&Egrave;GRE</span></div>
+<div class="acard-row"><div class="acard-l">Action</div><div class="acard-v">Envoi email prospect Dupont SA</div></div>
+<div class="acard-row"><div class="acard-l">Timestamp</div><div class="acard-v">2026-05-26T09:14:32.441Z</div></div>
+<div class="acard-row"><div class="acard-l">Co&ucirc;t API</div><div class="acard-v">0.0031 EUR</div></div>
+<div class="acard-row"><div class="acard-l">Hash SHA-256</div><div class="acard-v g">a3f8e2c1d94b7620f15e8a3c9d2b4f67e8a1c3d5b2f4e6a8c0d2e4f6a8b0c2d4</div></div>
+<div class="acard-row"><div class="acard-l">Hash pr&eacute;c&eacute;dent</div><div class="acard-v m">0000000000000000000000000000000000000000000000000000000000000000</div></div>
+</div></div>
+</div></div></section>
+<div class="wrap"><hr class="divln"></div>
+<section class="sec" id="demo"><div class="wrap">
+<div class="sec-head rev"><div class="eyebrow"><span class="ln"></span><span>D&eacute;monstration en direct</span></div>
+<h2 class="h2">Regardez l&rsquo;IA travailler.<br><em>Regardez-la se faire arr&ecirc;ter.</em></h2>
+<p class="lead">Simulation s&eacute;curis&eacute;e : r&eacute;ponses r&eacute;alistes, attestations SHA-256 calcul&eacute;es en direct dans votre navigateur. Aucune cl&eacute; API n&rsquo;est expos&eacute;e.</p></div>
+<div class="demo-card rev rd1">
+<div class="dscens">
+<div class="dscen" data-id="compta" onclick="selSc(&quot;compta&quot;)"><div class="dscen-ic">&#9878;&#65039;</div><div class="dscen-tp">Cabinet Comptable</div><div class="dscen-nm">Fiduciaire Martin &amp; Associ&eacute;s</div><div class="dscen-rk">Haut risque &middot; EU AI Act Art.12</div></div>
+<div class="dscen" data-id="immo" onclick="selSc(&quot;immo&quot;)"><div class="dscen-ic">&#127968;</div><div class="dscen-tp">Agence Immobili&egrave;re</div><div class="dscen-nm">Century21 Strasbourg Est</div><div class="dscen-rk amb">Risque mod&eacute;r&eacute; &middot; ISO 42001</div></div>
+<div class="dscen" data-id="ecom" onclick="selSc(&quot;ecom&quot;)"><div class="dscen-ic">&#128230;</div><div class="dscen-tp">E-commerce</div><div class="dscen-nm">ModeParis.fr</div><div class="dscen-rk amb">Risque mod&eacute;r&eacute; &middot; SOC 2</div></div>
+</div>
+<div class="dlaunch" id="dsel"><button class="dlaunch-btn" id="lbtn" onclick="launchDemo()" disabled>Lancer la d&eacute;monstration &rarr;</button><span class="dlaunch-h">S&eacute;lectionnez un sc&eacute;nario ci-dessus pour commencer</span></div>
+<div class="drt" id="drt" style="display:none">
+<div class="drt-st"><div><div class="drt-lbl">Client</div><div class="drt-val" id="rtc" style="font-size:13px">&mdash;</div></div><div class="drt-bw"><div class="drt-lbl">Budget</div><div class="drt-bb"><div class="drt-bf" id="rtbf"></div></div><div class="drt-bm"><span id="rtbv">0.0000&euro;</span><span>0.15&euro; max</span></div></div><div><div class="drt-lbl">Attestations</div><div class="drt-val" id="rta" style="color:var(--fern)">&#128274; 0</div></div><div class="drt-badge run" id="rtb">En cours</div></div>
+<div class="drt-act" id="rtact"><div class="drt-act-l">Action en cours</div><div class="drt-act-t" id="rtactt"></div></div>
+<div class="drt-blk" id="rtblk"><div class="drt-blk-t">&#128680; Circuit Breaker activ&eacute; &mdash; Agent neutralis&eacute;</div><div class="drt-blk-h">Budget d&eacute;pass&eacute;. Agent coup&eacute;. <em>Z&eacute;ro action non autoris&eacute;e.</em></div><div class="drt-blk-p">Sans TrustProtocol, l&rsquo;agent continuerait ind&eacute;finiment et les co&ucirc;ts exploseraient. Avec TrustProtocol : coupure automatique et journal cryptographique complet, disponible pour un audit l&eacute;gal imm&eacute;diat.</div></div>
+<div class="dtabs"><button class="dtab on" id="tlog" onclick="stab(&quot;logs&quot;)">Journal (<span id="lc">0</span>)</button><button class="dtab" id="tatt" onclick="stab(&quot;att&quot;)">Attestations SHA-256 (<span id="ac">0</span>)</button></div>
+<div class="dpan on" id="plog"><div id="logs" style="padding:8px 0"></div></div>
+<div class="dpan" id="patt"><div class="dverb"><button class="dverbtn" onclick="verChain()">V&eacute;rifier l&rsquo;int&eacute;grit&eacute; de la cha&icirc;ne</button><span class="dver-r" id="vr"></span></div><div id="attlist"></div></div>
+</div>
+<div class="dctrl" id="dctrl"><button class="dctrl-b" onclick="resetDemo()">&larr; Nouvelle d&eacute;mo</button><button class="dctrl-b pri" onclick="launchDemo()">Rejouer &rarr;</button></div>
+</div></div></section>
+<div class="wrap"><hr class="divln"></div>
+<section class="sec"><div class="wrap">
+<div class="sec-head rev"><div class="eyebrow"><span class="ln"></span><span>Secteurs</span></div>
+<h2 class="h2">Pour toute entreprise qui<br><em>confie sa voix &agrave; l&rsquo;IA.</em></h2>
+<p class="lead">L&rsquo;EU AI Act entre en vigueur en ao&ucirc;t 2026. Sans piste d&rsquo;audit immuable, les amendes peuvent atteindre 7% du chiffre d&rsquo;affaires mondial.</p></div>
+<div class="sct-grid">
+<div class="sct rev"><div class="sct-ic">&#9878;&#65039;</div><div class="sct-tp">Comptabilit&eacute;</div><div class="sct-t">Cabinets comptables</div><div class="sct-d">R&eacute;ponses client, g&eacute;n&eacute;ration de rapports, traitement de donn&eacute;es financi&egrave;res sensibles.</div></div>
+<div class="sct rev rd1"><div class="sct-ic">&#127968;</div><div class="sct-tp">Immobilier</div><div class="sct-t">Agences immobili&egrave;res</div><div class="sct-d">Qualification prospect 24h/24. Une hallucination non d&eacute;tect&eacute;e peut d&eacute;truire une relation client.</div></div>
+<div class="sct rev rd2"><div class="sct-ic">&#128230;</div><div class="sct-tp">Commerce</div><div class="sct-t">E-commerce</div><div class="sct-d">Service client automatis&eacute;. Une boucle non d&eacute;tect&eacute;e signifie des centaines d&rsquo;emails incorrects envoy&eacute;s.</div></div>
+<div class="sct rev rd3"><div class="sct-ic">&#9877;&#65039;</div><div class="sct-tp">R&eacute;glement&eacute;</div><div class="sct-t">Avocats &middot; Experts</div><div class="sct-d">L&rsquo;EU AI Act impose une tra&ccedil;abilit&eacute; stricte pour les syst&egrave;mes &agrave; haut risque d&egrave;s ao&ucirc;t 2026.</div></div>
+</div></div></section>
+<div class="wrap"><hr class="divln"></div>
+<section class="sec price" id="prix"><div class="wrap">
+<div class="sec-head rev" style="text-align:center;margin-left:auto;margin-right:auto"><div class="eyebrow"><span class="ln"></span><span>Tarifs</span></div>
+<h2 class="h2">Simple, <em>transparent,</em> sans engagement.</h2></div>
+<div class="pg">
+<div class="pc rev"><div class="pc-l">Starter</div><div class="pc-amt">490<span>&euro;</span></div><div class="pc-per">one-shot &middot; rembours&eacute; si non concluant</div><ul class="pc-f"><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Analyse de vos agents IA existants</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Identification des risques l&eacute;gaux</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Rapport de recommandations</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>1h de consultation incluse</li></ul><a href="#cta" class="pc-btn out">Commencer</a></div>
+<div class="pc ft rev rd1"><div class="pc-l">Business</div><div class="pc-amt">1900<span>&euro;</span></div><div class="pc-per">par mois &middot; jusqu&rsquo;&agrave; 5 agents</div><ul class="pc-f"><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Circuit Breaker financier</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Trust Attestation SHA-256</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Alertes en temps r&eacute;el</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Journal d&rsquo;audit EU AI Act</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Rapport mensuel inclus</li></ul><a href="#cta" class="pc-btn fill">Demander une d&eacute;mo</a></div>
+<div class="pc rev rd2"><div class="pc-l">Enterprise</div><div class="pc-amt" style="font-size:34px;padding-top:10px">Sur devis</div><div class="pc-per">agents illimit&eacute;s &middot; SLA garanti</div><ul class="pc-f"><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Agents illimit&eacute;s</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Dashboard personnalis&eacute;</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Conformit&eacute; EU AI Act compl&egrave;te</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6E3F" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Certification ISO 42001 assist&eacute;e</li></ul><a href="#cta" class="pc-btn out">Nous contacter</a></div>
+</div></div></section>
+<section class="cta" id="cta">
+<div class="cta-bg"></div>
+<svg class="cta-seal" viewBox="0 0 400 400" fill="none"><polygon points="200,20 280,60 360,60 380,140 340,200 380,260 360,340 280,340 200,380 120,340 40,340 20,260 60,200 20,140 40,60 120,60" stroke="#3B6E3F" stroke-width="1" fill="none"/><circle cx="200" cy="200" r="100" stroke="#3B6E3F" stroke-width=".8" fill="none"/><circle cx="200" cy="200" r="60" stroke="#3B6E3F" stroke-width=".5" fill="none"/><line x1="200" y1="100" x2="200" y2="300" stroke="#3B6E3F" stroke-width=".5"/><line x1="100" y1="200" x2="300" y2="200" stroke="#3B6E3F" stroke-width=".5"/></svg>
+<div class="cta-in wrap">
+<div class="eyebrow rev" style="margin-left:auto;margin-right:auto"><span class="ln"></span><span>Pr&ecirc;t &agrave; prot&eacute;ger vos agents&nbsp;?</span><span class="ln"></span></div>
+<h2 class="rev rd1">Votre agent IA est-il<br><em>vraiment sous contr&ocirc;le&nbsp;?</em></h2>
+<p class="cta-sub rev rd2">Audit gratuit de 30 minutes pour &eacute;valuer votre exposition l&eacute;gale et financi&egrave;re. Sans engagement.</p>
+<a href="mailto:damienchadenier@trustprotocol.tech?subject=Audit%20TrustProtocol&body=Bonjour%2C%20je%20souhaite%20un%20audit%20gratuit%20de%20mes%20agents%20IA." class="btn-p rev rd3" style="font-size:13px;padding:18px 40px">Demander mon audit gratuit</a>
+</div></section>
+<footer><div class="wrap"><div class="foot">
+<div class="foot-l"><svg width="24" height="24" viewBox="0 0 40 40" fill="none"><polygon points="20,2 28,6 36,6 38,14 34,20 38,26 36,34 28,34 20,38 12,34 4,34 2,26 6,20 2,14 4,6 12,6" stroke="#3B6E3F" stroke-width="1.3" fill="none"/><circle cx="20" cy="20" r="7" stroke="#3B6E3F" stroke-width=".85" fill="none"/></svg><div><div class="foot-bt">Trust<span>Protocol</span></div><div class="foot-cp">&copy; 2026 &middot; trustprotocol.tech &middot; Strasbourg, France</div></div></div>
+<div class="foot-tags"><span class="foot-tag">EU AI Act</span><span class="foot-tag">SHA-256</span><span class="foot-tag">ISO 42001</span><span class="foot-tag">SOC 2</span></div>
+</div></div></footer>
+<script>
+// Gate
+(function(){
+  if(sessionStorage.getItem("tp_auth")==="ok"){var g=document.getElementById("gate");if(g)g.style.display="none";}
+})();
+function checkPw(){
+  var v=document.getElementById("pw").value;
+  if(v==="trustprotocol2026"){sessionStorage.setItem("tp_auth","ok");document.getElementById("gate").style.display="none";}
+  else{document.getElementById("gerr").textContent="Mot de passe incorrect";document.getElementById("pw").value="";document.getElementById("pw").focus();}
+}
+
+// Nav scroll
+window.addEventListener("scroll",function(){document.getElementById("nav").classList.toggle("sc",window.scrollY>40);});
+
+// Reveal
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("in");});},{threshold:0.12});
+document.querySelectorAll(".rev").forEach(function(el){io.observe(el);});
+
+// ===== DEMO (secure, no API keys) =====
+var RESP={
+  compta:["Suite a l'analyse du bilan de Dupont SA, le ratio de liquidite ressort a 1,8, ce qui est satisfaisant. Je recommande d'examiner le poste clients qui represente 42% de l'actif circulant.","Objet : votre declaration TVA Q3 2026. Le solde a reverser s'eleve a 12 847 EUR, a regler avant le 20 du mois. Un detail complet est joint en annexe. Cordialement.","Pour Leblanc SARL, deux pistes d'optimisation : l'amortissement accelere des investissements recents et le report deficitaire sur les exercices anterieurs. Je propose un rendez-vous pour approfondir.","Le rapport de cloture annuelle indique une progression du chiffre d'affaires de 8,3%. Trois entreprises necessitent un suivi renforce suite a des tensions de tresorerie identifiees au quatrieme trimestre."],
+  immo:["VENTE - T3 lumineux 75 m2, Strasbourg Neudorf. Appartement traversant au 3eme etage, sejour de 28 m2, cuisine equipee, 2 chambres, cave. Proche tramway et commerces. 285 000 EUR HAI.","Suite a votre demande d'estimation a Schiltigheim, le marche local affiche une valeur moyenne de 3 200 EUR/m2 pour votre secteur. Je reste disponible pour une visite d'evaluation gratuite a votre convenance.","Objet : suivi de votre projet immobilier. Nous n'avons pas eu de nouvelles depuis notre dernier echange. Votre recherche est-elle toujours d'actualite ? De nouvelles opportunites correspondent a vos criteres.","Suite a la visite du 24 mai, les acquereurs ont manifeste un interet certain. Reserve principale : l'absence de parking. Une offre a 278 000 EUR semble envisageable selon eux."],
+  ecom:["Madame, Monsieur, nous vous presentons nos excuses pour ce retard de livraison. Votre colis est en transit et sera livre sous 48 heures. Un bon de reduction de 10% vous sera accorde pour ce desagrement.","Veste en laine bouillie - elegance intemporelle pour les journees fraiches. Composition 80% laine, 20% cachemire. Coupe ajustee, fermeture a boutons. Disponible en camel, bordeaux et marine. Ref. AH26-JLB.","Madame, je suis sincerement desole pour cette experience. Je procede immediatement au remboursement integral de votre commande, credite sous 5 a 7 jours ouvres. Puis-je vous proposer un avoir supplementaire ?","Analyse de 127 avis negatifs : 43% concernent les delais de livraison, 31% la conformite produit, 26% le service client. Recommandation prioritaire : communication proactive du suivi de commande des J+2."]
+};
+var QS={
+  compta:["Analyse du bilan Dupont SA - resume executif.","Reponse email declaration TVA Q3 client.","Conseil optimisation fiscale Leblanc SARL.","Rapport cloture annuelle portefeuille PME."],
+  immo:["Annonce T3 75m2 Strasbourg Neudorf 285k EUR.","Estimation maison Schiltigheim - email prospect.","Relance prospects silencieux depuis 2 semaines.","Suivi personnalise apres visite client."],
+  ecom:["Reponses tickets clients retards livraison.","Descriptions collection automne-hiver.","Reponse remboursement client mecontent.","Strategie de reponse aux avis negatifs."]
+};
+var CL={compta:"Fiduciaire Martin & Associes",immo:"Century21 Strasbourg Est",ecom:"ModeParis.fr"};
+var BM=0.15,sel=null,rc=0,atts=[],run=false,lc=0;
+
+function selSc(id){
+  sel=id;
+  document.querySelectorAll(".dscen").forEach(function(e){e.classList.remove("on");});
+  document.querySelector('[data-id="'+id+'"]').classList.add("on");
+  var b=document.getElementById("lbtn");b.disabled=false;
+  document.querySelector(".dlaunch-h").textContent="Simulation securisee - attestations SHA-256 reelles - zero cle API exposee";
+}
+function stab(t){
+  document.getElementById("tlog").classList.toggle("on",t==="logs");
+  document.getElementById("tatt").classList.toggle("on",t==="att");
+  document.getElementById("plog").classList.toggle("on",t==="logs");
+  document.getElementById("patt").classList.toggle("on",t==="att");
+}
+async function h256(m){var b=new TextEncoder().encode(m);var h=await crypto.subtle.digest("SHA-256",b);return Array.from(new Uint8Array(h)).map(function(x){return x.toString(16).padStart(2,"0");}).join("");}
+function alog(t,m){
+  var ti=new Date().toLocaleTimeString("fr-FR");
+  var c=document.getElementById("logs");
+  var el=document.createElement("div");
+  var isR=(t==="response");
+  el.className="dlog t-"+t;
+  el.innerHTML='<span class="dlog-tm">'+ti+'</span><span class="dlog-m '+(isR?"t-response":"t-"+t)+'">'+m+'</span>';
+  c.appendChild(el);c.scrollTop=c.scrollHeight;lc++;document.getElementById("lc").textContent=lc;
+}
+function upB(v){
+  var p=Math.min((v/BM)*100,100);
+  var f=document.getElementById("rtbf");
+  f.style.width=p+"%";
+  f.style.background=p>80?"#B23A3A":p>50?"#B07A2E":"#3B6E3F";
+  document.getElementById("rtbv").textContent=v.toFixed(4)+"\u20ac";
+}
+async function addAtt(i,q,r,co,ph){
+  var ts=new Date().toISOString();
+  var pay=JSON.stringify({i:i,q:q,r:r.substring(0,100),co:co,ts:ts,ph:ph});
+  var h=await h256(pay);
+  var att={i:i,q:q,r:r,co:co,ts:ts,h:h,ph:ph,pay:pay};
+  atts.push(att);
+  var c=document.getElementById("attlist");
+  var el=document.createElement("div");
+  el.className="datt";
+  el.innerHTML='<div class="datt-m"><span class="datt-id">Attestation #'+i+' \u00b7 '+new Date(ts).toLocaleTimeString("fr-FR")+'</span><span class="datt-co">'+co.toFixed(4)+'\u20ac</span></div><div class="datt-q">"'+q.substring(0,70)+'..."</div><div class="datt-h"><span class="l">HASH&nbsp;: </span><span class="v">'+h+'</span><br><span class="l">PREV&nbsp;: </span><span>'+ph.substring(0,48)+'...</span></div>';
+  c.appendChild(el);
+  document.getElementById("ac").textContent=atts.length;
+  document.getElementById("rta").textContent="\ud83d\udd12 "+atts.length;
+  return att;
+}
+async function verChain(){
+  var r=document.getElementById("vr");
+  r.textContent="Verification en cours...";r.className="dver-r";
+  await new Promise(function(x){setTimeout(x,900);});
+  var ok=true;
+  for(var i=1;i<atts.length;i++){if(atts[i].ph!==atts[i-1].h){ok=false;break;}}
+  for(var j=0;j<atts.length;j++){var rc2=await h256(atts[j].pay);if(rc2!==atts[j].h){ok=false;break;}}
+  r.className="dver-r "+(ok?"ok":"no");
+  r.textContent=ok?"\u2713 Chaine integre - aucune falsification detectee":"\u26a0 Chaine compromise - alteration detectee";
+}
+async function launchDemo(){
+  if(!sel||run)return;
+  run=true;rc=0;atts=[];lc=0;
+  document.getElementById("logs").innerHTML="";
+  document.getElementById("attlist").innerHTML="";
+  document.getElementById("lc").textContent="0";
+  document.getElementById("ac").textContent="0";
+  document.getElementById("rta").textContent="\ud83d\udd12 0";
+  document.getElementById("vr").textContent="";
+  document.getElementById("rtblk").style.display="none";
+  document.getElementById("dctrl").style.display="none";
+  document.getElementById("rtact").style.display="none";
+  upB(0);
+  var cl=CL[sel];
+  document.getElementById("rtc").textContent=cl;
+  document.getElementById("rtb").className="drt-badge run";
+  document.getElementById("rtb").textContent="En cours";
+  document.getElementById("dsel").style.display="none";
+  document.getElementById("drt").style.display="block";
+  stab("logs");
+  function sl(ms){return new Promise(function(r){setTimeout(r,ms);});}
+  alog("system","Demarrage agent IA - "+cl);await sl(450);
+  alog("system","TrustProtocol v2.0 - Circuit Breaker + Trust Attestation SHA-256");await sl(380);
+  alog("crypto","\ud83d\udd12 Registre cryptographique initialise - chaine SHA-256");await sl(550);
+  var ph="0".repeat(64);
+  var qs=QS[sel],rs=RESP[sel];
+  for(var i=0;i<qs.length;i++){
+    var q=qs[i];
+    document.getElementById("rtact").style.display="block";
+    document.getElementById("rtactt").textContent='"'+q+'"';
+    await sl(550);
+    alog("agent","Action "+(i+1)+"/4 - "+q.substring(0,52)+"...");await sl(280);
+    alog("check","\u26a1 Circuit Breaker - cout cumule : "+rc.toFixed(4)+"\u20ac / "+BM+"\u20ac");await sl(380);
+    if(rc>=BM){
+      alog("blocked","\ud83d\udea8 Budget depasse - agent bloque automatiquement");
+      alog("blocked","\ud83d\udce7 Alerte manager envoyee. Journal scelle cryptographiquement.");
+      document.getElementById("rtblk").style.display="block";
+      document.getElementById("rtb").className="drt-badge blk";
+      document.getElementById("rtb").textContent="Bloque";
+      document.getElementById("rtact").style.display="none";
+      document.getElementById("dctrl").style.display="flex";
+      stab("att");run=false;return;
+    }
+    alog("check","\u2713 Budget OK - action autorisee");await sl(200);
+    var txt=rs[i];
+    var co=0.003+(txt.length*0.000008);
+    await sl(680+Math.random()*380);
+    rc+=co;upB(rc);
+    alog("success","\u2705 Execute - "+co.toFixed(4)+"\u20ac");
+    alog("response",txt);await sl(360);
+    alog("crypto","\ud83d\udd12 Creation de l'attestation cryptographique...");await sl(520);
+    var att=await addAtt(i+1,q,txt,co,ph);ph=att.h;
+    alog("crypto","\u2705 Attestation #"+(i+1)+" scellee - "+att.h.substring(0,16)+"...");await sl(900);
+  }
+  alog("system","\u2705 Session terminee - "+atts.length+" attestations - "+rc.toFixed(4)+"\u20ac");
+  alog("crypto","\ud83d\udd12 Chaine d'integrite complete - registre immuable");
+  document.getElementById("rtb").className="drt-badge done";
+  document.getElementById("rtb").textContent="Termine";
+  document.getElementById("rtact").style.display="none";
+  document.getElementById("dctrl").style.display="flex";
+  run=false;
+}
+function resetDemo(){
+  run=false;rc=0;atts=[];lc=0;
+  document.getElementById("drt").style.display="none";
+  document.getElementById("dsel").style.display="flex";
+  document.getElementById("vr").textContent="";
+}
+</script>
+</body>
+</html>
