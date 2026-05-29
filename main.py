@@ -89,10 +89,10 @@ def verify_signature(payload: str, signature_b64: str) -> bool:
 # ============================================================
 # AUTH
 # ============================================================
-API_KEYS = {
-    "demo-key-001": {"client": "Demo Client", "plan": "business"},
-    "test-key-002": {"client": "Test Cabinet", "plan": "starter"},
-}
+import json
+_raw = os.environ.get("API_KEYS_JSON", "{}")
+API_KEYS = json.loads(_raw)
+
 
 def get_client(x_api_key: str = Header(...)):
     if x_api_key not in API_KEYS:
