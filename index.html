@@ -25,8 +25,8 @@ em{font-style:italic;color:#3B6E3F}
 --sh-lg:0 12px 48px rgba(36,74,38,.10);
 }
 
-/* ===== GATE ===== */
-#gate{position:fixed;inset:0;background:#FAFAF7;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px}
+/* GATE REMOVED */
+#gate{display:none!important}
 .gate-card{width:100%;max-width:380px;padding:44px 36px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-lg);text-align:center;border-radius:2px}
 .gate-card svg{margin:0 auto 22px;display:block}
 .gate-t{font-family:'Fraunces',serif;font-size:24px;font-weight:400;color:var(--ink);margin-bottom:6px}
@@ -360,14 +360,6 @@ footer{border-top:1px solid var(--line);background:var(--paper)}
 </style>
 </head>
 <body>
-<script>
-(function(){
-  var p = window.location.search + window.location.hash + window.location.pathname;
-  if(p.indexOf('client')>-1){
-    window.__TP_CLIENT__ = true;
-  }
-})();
-</script>
 <div id="gate">
 <div class="gate-card">
 <svg width="38" height="38" viewBox="0 0 40 40" fill="none"><polygon points="20,2 28,6 36,6 38,14 34,20 38,26 36,34 28,34 20,38 12,34 4,34 2,26 6,20 2,14 4,6 12,6" stroke="#3B6E3F" stroke-width="1.4" fill="none"/><circle cx="20" cy="20" r="7" stroke="#3B6E3F" stroke-width=".9" fill="none"/></svg>
@@ -375,7 +367,7 @@ footer{border-top:1px solid var(--line);background:var(--paper)}
 <div class="gate-s">Acc&egrave;s priv&eacute;</div>
 <input id="pw" type="password" placeholder="Mot de passe" onkeydown="if(event.key===&quot;Enter&quot;)checkPw()">
 <div id="gerr"></div>
-<button class="gate-btn" onclick="checkPw()">Entrer</button>
+<button class="gate-btn" >Entrer</button>
 </div></div>
 <nav id="nav"><div class="wrap" style="display:flex;align-items:center;justify-content:space-between;padding-top:0;padding-bottom:0;width:100%">
 <div class="nb"><svg width="28" height="28" viewBox="0 0 40 40" fill="none"><polygon points="20,2 28,6 36,6 38,14 34,20 38,26 36,34 28,34 20,38 12,34 4,34 2,26 6,20 2,14 4,6 12,6" stroke="#3B6E3F" stroke-width="1.4" fill="none"/><circle cx="20" cy="20" r="7" stroke="#3B6E3F" stroke-width=".9" fill="none"/></svg><span class="nb-t">Trust<span>Protocol</span></span></div>
@@ -726,307 +718,837 @@ function resetDemo(){
 }
 </script>
 
-<!-- DASHBOARD CLIENT -->
-<div id="tp-dashboard-page" style="display:none;position:fixed;inset:0;background:#FAFAF7;z-index:99999;overflow-y:auto">
+
+
+<!-- ===== CLIENT SECTION ===== -->
+<div id="page-client" style="display:none;position:fixed;inset:0;background:#FAFAF7;z-index:10000;overflow-y:auto">
 <style>
-#tp-dashboard-page { font-family:'DM Sans',sans-serif; }
-
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:#FAFAF7;color:#16181A;min-height:100vh;padding:2rem}
-:root{--fern:#3B6E3F;--fern-dp:#244A26;--fern-lt:#EEF3E9;--bg:#FAFAF7;--bg2:#F1EFE9;--line:#E2DED5;--mut:#8A847A;--red:#B23A3A;--red-lt:#FBEAEA;--gold:#A8843E;--gold-lt:#FBF3E8}
-.wrap{max-width:900px;margin:0 auto}
-.gate{background:#fff;border:1px solid var(--line);border-radius:4px;padding:2.5rem;max-width:400px;margin:4rem auto}
-.gate h2{font-size:20px;font-weight:500;margin-bottom:4px}
-.gate p{font-size:13px;color:var(--mut);margin-bottom:1.5rem}
-label{display:block;font-size:11px;font-family:'DM Mono',monospace;color:var(--mut);margin-bottom:6px;letter-spacing:.06em;text-transform:uppercase}
-input[type=password],input[type=text],input[type=number]{width:100%;padding:11px 14px;border:1px solid var(--line);background:var(--bg);font-family:'DM Mono',monospace;font-size:13px;outline:none;border-radius:2px}
-input:focus{border-color:var(--fern)}
-.btn{width:100%;padding:12px;background:var(--fern);color:#fff;border:none;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:12px}
-.btn:hover{background:var(--fern-dp)}
-.btn-sm{padding:6px 14px;font-size:10px;width:auto;margin-top:0;background:transparent;border:1px solid var(--line);color:var(--mut);border-radius:2px;cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:.06em}
-.btn-sm:hover{background:var(--bg2)}
-.btn-red{background:transparent;border:1px solid var(--red);color:var(--red)}
-.btn-red:hover{background:var(--red-lt)}
-.err{font-size:11px;font-family:'DM Mono',monospace;color:var(--red);margin-top:8px;min-height:16px}
-.dashboard{display:none}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--line)}
-.topbar h2{font-size:16px;font-weight:500}
-.topbar p{font-size:11px;font-family:'DM Mono',monospace;color:var(--mut);margin-top:2px}
-.topbar-right{display:flex;gap:8px;align-items:center}
-.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:2rem}
-.metric{background:#fff;border:1px solid var(--line);border-radius:4px;padding:1rem}
-.metric-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--mut);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
-.metric-value{font-size:20px;font-weight:500}
-.metric-value.green{color:var(--fern)}
-.metric-value.red{color:var(--red)}
-.metric-value.gold{color:var(--gold)}
-.section-title{font-size:10px;font-family:'DM Mono',monospace;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
-.card{background:#fff;border:1px solid var(--line);border-radius:4px;overflow:hidden;margin-bottom:2rem}
-.row{display:grid;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:12px;align-items:center}
-.row:last-child{border-bottom:none}
-.row.header{background:var(--bg2);font-family:'DM Mono',monospace;font-size:10px;color:var(--mut)}
-.ledger-row{grid-template-columns:2fr 1fr 1fr 1fr}
-.agent-row{grid-template-columns:1.5fr 1fr 1fr 1fr 1fr}
-.agent-name{font-weight:500;font-family:'DM Mono',monospace;font-size:11px}
-.action{color:var(--mut);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cost{font-family:'DM Mono',monospace;font-size:11px}
+.dash-wrap{max-width:960px;margin:0 auto;padding:1.5rem}
+.dash-topbar{display:flex;align-items:center;justify-content:space-between;padding-bottom:1rem;margin-bottom:1.5rem;border-bottom:1px solid #E2DED5}
+.dash-topbar h2{font-size:16px;font-weight:500;font-family:'DM Sans',sans-serif}
+.dash-topbar p{font-size:11px;font-family:'DM Mono',monospace;color:#8A847A;margin-top:2px}
+.dash-back{font-size:11px;font-family:'DM Mono',monospace;color:#8A847A;cursor:pointer;padding:6px 12px;border:1px solid #E2DED5;border-radius:2px;background:transparent}
+.dash-back:hover{background:#F1EFE9}
+.dash-logout{font-size:11px;font-family:'DM Mono',monospace;color:#8A847A;cursor:pointer;padding:6px 12px;border:1px solid #E2DED5;border-radius:2px;background:transparent;margin-left:8px}
+.dash-tabs{display:flex;gap:0;border-bottom:1px solid #E2DED5;margin-bottom:1.5rem;overflow-x:auto}
+.dash-tab{padding:10px 16px;font-size:11px;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;color:#8A847A;white-space:nowrap}
+.dash-tab:hover{color:#16181A}
+.dash-tab.active{color:#3B6E3F;border-bottom-color:#3B6E3F}
+.dash-login{background:#fff;border:1px solid #E2DED5;border-radius:4px;padding:2.5rem;max-width:400px;margin:4rem auto}
+.dash-login h2{font-size:20px;font-weight:500;margin-bottom:4px;font-family:'Fraunces',serif}
+.dash-login p{font-size:13px;color:#8A847A;margin-bottom:1.5rem;font-family:'DM Sans',sans-serif}
+.d-label{display:block;font-size:11px;font-family:'DM Mono',monospace;color:#8A847A;margin-bottom:6px;letter-spacing:.06em;text-transform:uppercase}
+.d-input{width:100%;padding:11px 14px;border:1px solid #E2DED5;background:#FAFAF7;font-family:'DM Mono',monospace;font-size:13px;outline:none;border-radius:2px;margin-bottom:8px}
+.d-input:focus{border-color:#3B6E3F}
+.d-btn{width:100%;padding:12px;background:#3B6E3F;color:#fff;border:none;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+.d-btn:hover{background:#244A26}
+.d-btn-sm{padding:6px 14px;font-size:10px;width:auto;background:transparent;border:1px solid #E2DED5;color:#8A847A;border-radius:2px;cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:.06em}
+.d-btn-sm:hover{background:#F1EFE9}
+.d-btn-danger{border-color:#B23A3A;color:#B23A3A}
+.d-btn-danger:hover{background:#FBEAEA}
+.d-err{font-size:11px;font-family:'DM Mono',monospace;color:#B23A3A;min-height:16px}
+.d-ok{font-size:11px;font-family:'DM Mono',monospace;color:#3B6E3F;min-height:16px}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1.5rem}
+.metric-card{background:#fff;border:1px solid #E2DED5;border-radius:4px;padding:1rem}
+.metric-label{font-size:10px;font-family:'DM Mono',monospace;color:#8A847A;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.metric-value{font-size:22px;font-weight:500;font-family:'DM Sans',sans-serif}
+.metric-value.green{color:#3B6E3F}
+.metric-value.red{color:#B23A3A}
+.d-card{background:#fff;border:1px solid #E2DED5;border-radius:4px;overflow:hidden;margin-bottom:1.5rem}
+.d-table-row{display:grid;gap:8px;padding:10px 14px;border-bottom:1px solid #E2DED5;font-size:12px;align-items:center;font-family:'DM Sans',sans-serif}
+.d-table-row:last-child{border-bottom:none}
+.d-table-row.header{background:#F1EFE9;font-family:'DM Mono',monospace;font-size:10px;color:#8A847A}
+.d-ledger-row{grid-template-columns:2fr 1fr 1fr 1fr}
+.d-agent-row{grid-template-columns:1.5fr 1fr 1fr 1fr 1.2fr}
+.d-empty{padding:2rem;text-align:center;color:#8A847A;font-size:13px}
+.d-loading{padding:14px;text-align:center;font-size:12px;color:#8A847A;font-family:'DM Mono',monospace}
 .badge{font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:2px;display:inline-block}
-.ok{background:var(--fern-lt);color:var(--fern)}
-.fail{background:var(--red-lt);color:var(--red)}
-.warn{background:var(--gold-lt);color:var(--gold)}
-.empty{padding:2rem;text-align:center;color:var(--mut);font-size:13px}
-.loading{padding:14px;text-align:center;font-size:12px;color:var(--mut);font-family:'DM Mono',monospace}
-.pubkey{background:var(--bg2);border-radius:4px;padding:12px 14px;font-family:'DM Mono',monospace;font-size:10px;color:var(--mut);word-break:break-all;line-height:1.6;margin-bottom:2rem}
-.row-flex{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.progress-bar{width:100%;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;margin-top:4px}
-.progress-fill{height:100%;border-radius:3px;background:var(--fern);transition:width .3s}
-.progress-fill.warn{background:var(--gold)}
-.progress-fill.danger{background:var(--red)}
-.chain-status{display:flex;align-items:center;gap:8px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:4px;margin-bottom:2rem}
-.chain-dot{width:8px;height:8px;border-radius:50%;background:var(--fern)}
-.chain-dot.invalid{background:var(--red)}
-.chain-text{font-size:12px;font-family:'DM Mono',monospace;color:var(--mut)}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:100;align-items:center;justify-content:center}
+.badge-ok{background:#EEF3E9;color:#3B6E3F}
+.badge-fail{background:#FBEAEA;color:#B23A3A}
+.badge-warn{background:#FBF3E8;color:#A8843E}
+.badge-blue{background:#E8F0FB;color:#2E5BAD}
+.progress-bar{width:100%;height:5px;background:#F1EFE9;border-radius:3px;overflow:hidden;margin-top:4px}
+.progress-fill{height:100%;border-radius:3px;background:#3B6E3F;transition:width .3s}
+.progress-fill.warn{background:#A8843E}
+.progress-fill.danger{background:#B23A3A}
+.d-section-title{font-size:10px;font-family:'DM Mono',monospace;color:#8A847A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.d-row-flex{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.chain-bar{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;border:1px solid #E2DED5;border-radius:4px;margin-bottom:1.5rem}
+.chain-dot{width:8px;height:8px;border-radius:50%;background:#3B6E3F;flex-shrink:0}
+.chain-dot.invalid{background:#B23A3A}
+.chain-text{font-size:12px;font-family:'DM Mono',monospace;color:#8A847A}
+.d-mono{font-family:'DM Mono',monospace;font-size:11px}
+.d-pubkey{background:#F1EFE9;border-radius:4px;padding:12px 14px;font-family:'DM Mono',monospace;font-size:10px;color:#8A847A;word-break:break-all;line-height:1.6}
+.d-verify-result{border:1px solid #E2DED5;border-radius:4px;padding:1.25rem;margin-top:1rem}
+.d-verify-result.ok{border-color:#3B6E3F;background:#EEF3E9}
+.d-verify-result.fail{border-color:#B23A3A;background:#FBEAEA}
+.d-code{background:#F1EFE9;border-radius:4px;padding:12px 14px;font-family:'DM Mono',monospace;font-size:11px;color:#16181A;margin:8px 0;overflow-x:auto;white-space:pre}
+.d-settings-section{margin-bottom:2rem}
+.d-settings-section h3{font-size:13px;font-weight:600;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #E2DED5}
+.d-field{margin-bottom:12px}
+.d-field-row{display:flex;align-items:center;gap:8px}
+.d-key-masked{font-family:'DM Mono',monospace;font-size:13px;background:#F1EFE9;padding:10px 14px;border-radius:2px;flex:1;border:1px solid #E2DED5}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:20000;align-items:center;justify-content:center}
 .modal-overlay.active{display:flex}
-.modal{background:#fff;border:1px solid var(--line);border-radius:4px;padding:2rem;width:360px}
-.modal h3{font-size:15px;font-weight:500;margin-bottom:4px}
-.modal p{font-size:12px;color:var(--mut);margin-bottom:1.5rem}
+.modal-box{background:#fff;border:1px solid #E2DED5;border-radius:4px;padding:2rem;width:380px;max-width:90vw}
+.modal-box h3{font-size:15px;font-weight:500;margin-bottom:4px}
+.modal-box p{font-size:12px;color:#8A847A;margin-bottom:1.5rem}
 .modal-actions{display:flex;gap:8px;margin-top:1rem}
-
+.export-bar{display:flex;gap:8px;margin-bottom:12px}
+.filter-bar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.filter-bar input{padding:8px 12px;border:1px solid #E2DED5;border-radius:2px;font-family:'DM Mono',monospace;font-size:11px;background:#FAFAF7;outline:none;flex:1;min-width:150px}
+.filter-bar input:focus{border-color:#3B6E3F}
+.filter-bar select{padding:8px 12px;border:1px solid #E2DED5;border-radius:2px;font-family:'DM Mono',monospace;font-size:11px;background:#FAFAF7;outline:none;cursor:pointer}
 </style>
 
-<div class="wrap">
-<div class="gate" id="dashgate">
-  <h2>TrustProtocol</h2>
-  <p>Accès client — entrez votre clé API</p>
-  <label>Clé API</label>
-  <input type="password" id="apikey" placeholder="xxxx-xxxx-xxxx" autocomplete="off">
-  <button class="btn" onclick="login()">Accéder au ledger</button>
-  <div class="err" id="err"></div>
-</div>
-
-<div class="dashboard" id="dashboard">
-  <div class="topbar">
-    <div><h2 id="client-name">Dashboard</h2><p id="client-plan"></p></div>
-    <div class="topbar-right">
-      <button class="btn-sm" onclick="exportJSON()">↓ Export JSON</button>
-      <button class="btn-sm" onclick="logout()">Déconnexion</button>
+<div class="dash-wrap">
+  <!-- CLIENT LOGIN -->
+  <div id="client-login">
+    <div class="dash-login">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="margin:0 auto 16px;display:block"><circle cx="20" cy="20" r="19" stroke="#3B6E3F" stroke-width="1.5"/><path d="M13 20a7 7 0 0 1 14 0" stroke="#3B6E3F" stroke-width="1.5" stroke-linecap="round"/><circle cx="20" cy="20" r="3" fill="#3B6E3F"/></svg>
+      <h2>TrustProtocol</h2>
+      <p>Espace client — entrez votre clé API</p>
+      <label class="d-label">Clé API</label>
+      <input type="password" id="c-key" class="d-input" placeholder="tp-xxxxxxxxxxxx" autocomplete="off">
+      <button class="d-btn" onclick="clientLogin()">Accéder au dashboard</button>
+      <div class="d-err" id="c-err" style="margin-top:8px"></div>
+      <div style="text-align:center;margin-top:16px"><span class="dash-back" onclick="showPage('landing')">← Retour au site</span></div>
     </div>
   </div>
 
-  <div class="metrics" id="metrics">
-    <div class="metric"><div class="metric-label">Entrées</div><div class="metric-value" id="m-total">—</div></div>
-    <div class="metric"><div class="metric-label">Coût total</div><div class="metric-value" id="m-cost">—</div></div>
-    <div class="metric"><div class="metric-label">Agents</div><div class="metric-value" id="m-agents">—</div></div>
-    <div class="metric"><div class="metric-label">Bloquées</div><div class="metric-value red" id="m-blocked">—</div></div>
-    <div class="metric"><div class="metric-label">Intégrité</div><div class="metric-value green" id="m-chain">—</div></div>
-  </div>
-
-  <div class="row-flex">
-    <div class="section-title">Agents & budgets</div>
-    <button class="btn-sm" onclick="loadAgents()">↻ Rafraîchir</button>
-  </div>
-  <div class="card" id="agents-card">
-    <div class="row agent-row header">
-      <span>Agent</span><span>Consommé</span><span>Limite</span><span>Restant</span><span>Action</span>
+  <!-- CLIENT DASHBOARD -->
+  <div id="client-dashboard" style="display:none">
+    <div class="dash-topbar">
+      <div>
+        <h2 id="c-name">Dashboard</h2>
+        <p id="c-plan"></p>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="d-btn-sm" onclick="showPage('landing')">← Site</button>
+        <button class="d-btn-sm" onclick="clientLogout()">Déconnexion</button>
+      </div>
     </div>
-    <div id="agents-body"><div class="loading">Chargement...</div></div>
-  </div>
+    <nav class="dash-tabs">
+      <div class="dash-tab active" data-tab="overview" onclick="switchClientTab('overview')">Vue d'ensemble</div>
+      <div class="dash-tab" data-tab="ledger" onclick="switchClientTab('ledger')">Ledger</div>
+      <div class="dash-tab" data-tab="agents" onclick="switchClientTab('agents')">Agents & Budgets</div>
+      <div class="dash-tab" data-tab="verify" onclick="switchClientTab('verify')">Vérification</div>
+      <div class="dash-tab" data-tab="settings" onclick="switchClientTab('settings')">Paramètres</div>
+    </nav>
 
-  <div class="row-flex">
-    <div class="section-title">Ledger des attestations</div>
-    <button class="btn-sm" onclick="loadLedger()">↻ Rafraîchir</button>
-  </div>
-  <div class="card">
-    <div class="row ledger-row header"><span>Agent / Action</span><span>Coût €</span><span>Statut</span><span>Date</span></div>
-    <div id="ledger-body"><div class="loading">Chargement...</div></div>
-  </div>
+    <!-- TAB OVERVIEW -->
+    <div id="c-tab-overview">
+      <div class="metrics-grid" id="c-metrics">
+        <div class="metric-card"><div class="metric-label">Entrées</div><div class="metric-value" id="cm-total">—</div></div>
+        <div class="metric-card"><div class="metric-label">Coût total</div><div class="metric-value" id="cm-cost">—</div></div>
+        <div class="metric-card"><div class="metric-label">Agents</div><div class="metric-value" id="cm-agents">—</div></div>
+        <div class="metric-card"><div class="metric-label">Bloquées</div><div class="metric-value red" id="cm-blocked">—</div></div>
+        <div class="metric-card"><div class="metric-label">Intégrité</div><div class="metric-value green" id="cm-chain">—</div></div>
+      </div>
+      <div class="chain-bar"><div class="chain-dot" id="chain-dot"></div><div class="chain-text" id="chain-text">Vérification...</div></div>
+      <div class="d-row-flex"><div class="d-section-title">Dernières attestations</div></div>
+      <div class="d-card"><div class="d-table-row d-ledger-row header"><span>Agent / Action</span><span>Coût €</span><span>Statut</span><span>Date</span></div><div id="c-recent"><div class="d-loading">Chargement...</div></div></div>
+    </div>
 
-  <div class="section-title">Intégrité de la chaîne</div>
-  <div class="chain-status" id="chain-status">
-    <div class="chain-dot" id="chain-dot"></div>
-    <div class="chain-text" id="chain-text">Vérification...</div>
-  </div>
+    <!-- TAB LEDGER -->
+    <div id="c-tab-ledger" style="display:none">
+      <div class="filter-bar">
+        <input type="text" id="ledger-search" placeholder="Rechercher agent ou action..." oninput="renderLedger()">
+        <select id="ledger-status" onchange="renderLedger()"><option value="">Tous statuts</option><option value="valide">Validé</option><option value="bloque">Bloqué</option></select>
+      </div>
+      <div class="export-bar">
+        <button class="d-btn-sm" onclick="exportJSON()">↓ Export JSON</button>
+        <button class="d-btn-sm" onclick="exportCSV()">↓ Export CSV</button>
+        <span style="font-size:11px;font-family:'DM Mono',monospace;color:#8A847A;margin-left:8px" id="ledger-count"></span>
+      </div>
+      <div class="d-card"><div class="d-table-row d-ledger-row header"><span>Agent / Action</span><span>Coût €</span><span>Statut</span><span>Date</span></div><div id="c-ledger-body"><div class="d-loading">Chargement...</div></div></div>
+    </div>
 
-  <div class="section-title">Clé publique RSA</div>
-  <div class="pubkey" id="pubkey">Chargement...</div>
+    <!-- TAB AGENTS -->
+    <div id="c-tab-agents" style="display:none">
+      <div class="d-row-flex"><div class="d-section-title">Agents & budgets</div><button class="d-btn-sm" onclick="loadAgents()">↻ Rafraîchir</button></div>
+      <div class="d-card"><div class="d-table-row d-agent-row header"><span>Agent</span><span>Consommé</span><span>Limite</span><span>Restant</span><span>Actions</span></div><div id="c-agents-body"><div class="d-loading">Chargement...</div></div></div>
+    </div>
+
+    <!-- TAB VERIFY -->
+    <div id="c-tab-verify" style="display:none">
+      <div style="max-width:600px">
+        <div class="d-section-title" style="margin-bottom:16px">Vérifier l'intégrité d'une attestation</div>
+        <p style="font-size:13px;color:#8A847A;margin-bottom:16px;font-family:'DM Sans',sans-serif">Entrez un ID d'attestation pour vérifier sa signature RSA et son intégrité cryptographique. Utile pour les audits tiers.</p>
+        <label class="d-label">ID d'attestation (UUID)</label>
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+          <input type="text" id="verify-id" class="d-input" style="margin:0;flex:1" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+          <button class="d-btn" style="width:auto;padding:0 20px" onclick="verifyAttestation()">Vérifier</button>
+        </div>
+        <div class="d-err" id="verify-err"></div>
+        <div id="verify-result"></div>
+      </div>
+    </div>
+
+    <!-- TAB SETTINGS -->
+    <div id="c-tab-settings" style="display:none">
+      <div style="max-width:640px">
+        <div class="d-settings-section">
+          <h3>Mon compte</h3>
+          <div class="d-field"><div class="d-label">Nom</div><div class="d-key-masked" id="s-name">—</div></div>
+          <div class="d-field"><div class="d-label">Plan</div><div id="s-plan">—</div></div>
+          <div class="d-field">
+            <div class="d-label">Clé API</div>
+            <div class="d-field-row">
+              <div class="d-key-masked" id="s-key">••••••••••••••••</div>
+              <button class="d-btn-sm" onclick="toggleKey()">Afficher</button>
+              <button class="d-btn-sm" onclick="copyKey()">Copier</button>
+            </div>
+          </div>
+        </div>
+        <div class="d-settings-section">
+          <h3>Intégration — Guide rapide</h3>
+          <p style="font-size:12px;color:#8A847A;margin-bottom:12px;font-family:'DM Sans',sans-serif">Intercept d'une action agent :</p>
+          <div class="d-code" id="s-curl-example"></div>
+          <p style="font-size:12px;color:#8A847A;margin:12px 0;font-family:'DM Sans',sans-serif">Python :</p>
+          <div class="d-code" id="s-python-example"></div>
+        </div>
+        <div class="d-settings-section">
+          <h3>Clé publique RSA</h3>
+          <div class="d-pubkey" id="s-pubkey">Chargement...</div>
+        </div>
+        <div class="d-settings-section">
+          <h3>Support</h3>
+          <p style="font-size:13px;font-family:'DM Sans',sans-serif">Questions ou problèmes : <strong>contact@trustprotocol.tech</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
 
-<div class="modal-overlay" id="budget-modal">
-  <div class="modal">
+<!-- Budget edit modal -->
+<div class="modal-overlay" id="budget-modal" onclick="if(event.target===this)closeBudgetModal()">
+  <div class="modal-box">
     <h3>Modifier la limite</h3>
-    <p id="modal-agent-name">Agent</p>
-    <label>Nouvelle limite (€)</label>
-    <input type="number" id="modal-limit" step="0.01" min="0" placeholder="0.15">
+    <p id="budget-modal-agent">Agent</p>
+    <label class="d-label">Nouvelle limite (€)</label>
+    <input type="number" id="budget-modal-limit" class="d-input" step="0.01" min="0" placeholder="0.50">
     <div class="modal-actions">
-      <button class="btn" style="flex:1" onclick="saveBudget()">Enregistrer</button>
-      <button class="btn-sm btn-red" onclick="closeModal()">Annuler</button>
+      <button class="d-btn" style="flex:1" onclick="saveBudgetLimit()">Enregistrer</button>
+      <button class="d-btn-sm d-btn-danger" onclick="closeBudgetModal()">Annuler</button>
     </div>
-    <div class="err" id="modal-err"></div>
+    <div class="d-err" id="budget-modal-err" style="margin-top:8px"></div>
+  </div>
+</div>
+</div>
+
+<!-- ===== ADMIN SECTION ===== -->
+<div id="page-admin" style="display:none;position:fixed;inset:0;background:#FAFAF7;z-index:10000;overflow-y:auto">
+<div class="dash-wrap">
+  <!-- ADMIN LOGIN -->
+  <div id="admin-login">
+    <div class="dash-login">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="margin:0 auto 16px;display:block"><circle cx="20" cy="20" r="19" stroke="#B23A3A" stroke-width="1.5"/><path d="M15 20h10M20 15v10" stroke="#B23A3A" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <h2>Administration</h2>
+      <p>Accès réservé — clé administrateur requise</p>
+      <label class="d-label">Clé admin</label>
+      <input type="password" id="a-key" class="d-input" placeholder="••••••••••••" autocomplete="off">
+      <button class="d-btn" style="background:#B23A3A" onclick="adminLogin()">Accéder</button>
+      <div class="d-err" id="a-err" style="margin-top:8px"></div>
+      <div style="text-align:center;margin-top:16px"><span class="dash-back" onclick="showPage('landing')">← Retour au site</span></div>
+    </div>
+  </div>
+
+  <!-- ADMIN DASHBOARD -->
+  <div id="admin-dashboard" style="display:none">
+    <div class="dash-topbar">
+      <div><h2>Administration TrustProtocol</h2><p>Gestion des clients et du service</p></div>
+      <div style="display:flex;gap:8px">
+        <button class="d-btn-sm" onclick="showPage('landing')">← Site</button>
+        <button class="d-btn-sm" onclick="adminLogout()">Déconnexion</button>
+      </div>
+    </div>
+    <div class="metrics-grid" id="admin-stats-bar">
+      <div class="metric-card"><div class="metric-label">Clients actifs</div><div class="metric-value green" id="as-active">—</div></div>
+      <div class="metric-card"><div class="metric-label">Attestations</div><div class="metric-value" id="as-att">—</div></div>
+      <div class="metric-card"><div class="metric-label">Coût traité</div><div class="metric-value" id="as-cost">—</div></div>
+      <div class="metric-card"><div class="metric-label">Demandes démo</div><div class="metric-value" id="as-demos">—</div></div>
+    </div>
+    <nav class="dash-tabs">
+      <div class="dash-tab active" data-tab="clients" onclick="switchAdminTab('clients')">Clients</div>
+      <div class="dash-tab" data-tab="create" onclick="switchAdminTab('create')">Nouveau client</div>
+      <div class="dash-tab" data-tab="demos" onclick="switchAdminTab('demos')">Demandes démo</div>
+    </nav>
+
+    <!-- ADMIN TAB CLIENTS -->
+    <div id="a-tab-clients">
+      <div class="d-row-flex"><div class="d-section-title">Clients</div><button class="d-btn-sm" onclick="loadAdminClients()">↻ Rafraîchir</button></div>
+      <div class="d-card">
+        <div class="d-table-row header" style="grid-template-columns:1.5fr 1fr 1.5fr 1fr 1fr 1fr;font-family:'DM Mono',monospace;font-size:10px;color:#8A847A">
+          <span>Nom</span><span>Plan</span><span>Clé API</span><span>Attestations</span><span>Statut</span><span>Actions</span>
+        </div>
+        <div id="a-clients-body"><div class="d-loading">Chargement...</div></div>
+      </div>
+    </div>
+
+    <!-- ADMIN TAB CREATE -->
+    <div id="a-tab-create" style="display:none">
+      <div style="max-width:480px">
+        <div class="d-section-title" style="margin-bottom:16px">Créer un nouveau client</div>
+        <div class="d-field"><label class="d-label">Nom du client / entreprise</label><input type="text" id="nc-name" class="d-input" placeholder="Acme Corp"></div>
+        <div class="d-field">
+          <label class="d-label">Plan</label>
+          <select id="nc-plan" class="d-input" style="cursor:pointer">
+            <option value="starter">Starter</option>
+            <option value="business">Business</option>
+            <option value="enterprise">Enterprise</option>
+          </select>
+        </div>
+        <button class="d-btn" onclick="createClient()">Créer et générer la clé API</button>
+        <div class="d-err" id="nc-err" style="margin-top:8px"></div>
+        <div id="nc-result" style="display:none;margin-top:16px;padding:16px;background:#EEF3E9;border:1px solid #3B6E3F;border-radius:4px">
+          <div style="font-size:11px;font-family:'DM Mono',monospace;color:#3B6E3F;margin-bottom:8px;font-weight:600">✓ CLIENT CRÉÉ — Copiez la clé API maintenant</div>
+          <div style="font-size:11px;font-family:'DM Mono',monospace;color:#8A847A;margin-bottom:4px">Cette clé n'est affichée qu'une seule fois.</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+            <div id="nc-key" style="font-family:'DM Mono',monospace;font-size:12px;background:#fff;padding:10px 14px;border-radius:2px;flex:1;border:1px solid #E2DED5;word-break:break-all"></div>
+            <button class="d-btn-sm" onclick="copyNewKey()">Copier</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN TAB DEMOS -->
+    <div id="a-tab-demos" style="display:none">
+      <div class="d-row-flex"><div class="d-section-title">Demandes de démo</div><button class="d-btn-sm" onclick="loadDemoRequests()">↻ Rafraîchir</button></div>
+      <div class="d-card">
+        <div class="d-table-row header" style="grid-template-columns:1fr 1fr 1fr 2fr 1fr">
+          <span>Nom</span><span>Email</span><span>Entreprise</span><span>Message</span><span>Date</span>
+        </div>
+        <div id="a-demos-body"><div class="d-loading">Chargement...</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===== CGV SECTION ===== -->
+<div id="page-cgv" style="display:none;position:fixed;inset:0;background:#FAFAF7;z-index:10000;overflow-y:auto">
+<div style="max-width:800px;margin:0 auto;padding:2rem">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid #E2DED5">
+    <div>
+      <h1 style="font-family:'Fraunces',serif;font-size:24px;font-weight:400">Conditions Générales de Vente</h1>
+      <p style="font-size:12px;font-family:'DM Mono',monospace;color:#8A847A;margin-top:4px">TrustProtocol — Service SaaS B2B</p>
+    </div>
+    <button class="dash-back" onclick="showPage('landing')">← Retour</button>
+  </div>
+  <div style="font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.8;color:#16181A">
+    <p style="margin-bottom:16px">Les présentes Conditions Générales de Vente régissent l'accès et l'utilisation du service TrustProtocol, plateforme SaaS de gouvernance et d'attestation cryptographique pour agents IA. Elles s'appliquent exclusivement aux relations entre professionnels (B2B).</p>
+    <h2 style="font-family:'Fraunces',serif;font-size:18px;font-weight:400;margin:24px 0 8px;color:#244A26">Service</h2>
+    <p style="margin-bottom:16px">TrustProtocol fournit une infrastructure d'interception, de vérification budgétaire, et d'attestation cryptographique (SHA-256 + RSA) des actions d'agents d'intelligence artificielle, accessible via API et tableau de bord client.</p>
+    <h2 style="font-family:'Fraunces',serif;font-size:18px;font-weight:400;margin:24px 0 8px;color:#244A26">Facturation</h2>
+    <p style="margin-bottom:16px">Le service est fourni par abonnement mensuel ou annuel, selon devis accepté. Les prix sont HT. En cas de retard de paiement, des pénalités s'appliquent conformément aux articles L.441-10 et D.441-5 du Code de commerce.</p>
+    <h2 style="font-family:'Fraunces',serif;font-size:18px;font-weight:400;margin:24px 0 8px;color:#244A26">Responsabilité</h2>
+    <p style="margin-bottom:16px">TrustProtocol est un outil de gouvernance et de traçabilité. Le prestataire est tenu à une obligation de moyens. Sa responsabilité est limitée aux dommages directs et plafonnée aux sommes versées au cours des 12 derniers mois.</p>
+    <h2 style="font-family:'Fraunces',serif;font-size:18px;font-weight:400;margin:24px 0 8px;color:#244A26">Données & RGPD</h2>
+    <p style="margin-bottom:16px">Le client demeure responsable de traitement. TrustProtocol agit en qualité de sous-traitant. Les données sont sécurisées par chiffrement cryptographique et stockées sur infrastructure PostgreSQL sécurisée.</p>
+    <h2 style="font-family:'Fraunces',serif;font-size:18px;font-weight:400;margin:24px 0 8px;color:#244A26">Droit applicable</h2>
+    <p style="margin-bottom:32px">Les présentes sont régies par le droit français. Tout litige relève de la compétence exclusive du tribunal compétent du siège du prestataire.</p>
+    <p style="font-size:12px;font-family:'DM Mono',monospace;color:#8A847A;border-top:1px solid #E2DED5;padding-top:16px">Version 1.0 — Pour le document complet avec tous les articles, contactez contact@trustprotocol.tech</p>
+  </div>
+</div>
+</div>
+
+<!-- ===== DEMO MODAL ===== -->
+<div class="modal-overlay" id="demo-modal" onclick="if(event.target===this)closeDemoModal()">
+  <div class="modal-box" style="width:440px">
+    <h3 style="font-family:'Fraunces',serif;font-size:20px;font-weight:400">Demander une démo</h3>
+    <p>Un de nos experts vous contactera pour une démonstration personnalisée.</p>
+    <div class="d-field"><label class="d-label">Nom *</label><input type="text" id="dm-name" class="d-input" placeholder="Jean Dupont"></div>
+    <div class="d-field"><label class="d-label">Email professionnel *</label><input type="email" id="dm-email" class="d-input" placeholder="jean@entreprise.com"></div>
+    <div class="d-field"><label class="d-label">Entreprise</label><input type="text" id="dm-company" class="d-input" placeholder="Acme Corp"></div>
+    <div class="d-field"><label class="d-label">Message</label><textarea id="dm-message" class="d-input" rows="3" placeholder="Décrivez votre contexte..." style="resize:vertical"></textarea></div>
+    <div class="modal-actions">
+      <button class="d-btn" style="flex:1" onclick="submitDemo()">Envoyer la demande</button>
+      <button class="d-btn-sm d-btn-danger" onclick="closeDemoModal()">Annuler</button>
+    </div>
+    <div class="d-err" id="dm-err" style="margin-top:8px"></div>
+    <div class="d-ok" id="dm-ok" style="margin-top:8px"></div>
   </div>
 </div>
 
 <script>
-const API='https://api.trustprotocol.tech';
-let K='';
-let allEntries=[];
-let currentAgent='';
 
-async function login(){
-  const key=document.getElementById('apikey').value.trim();
-  const err=document.getElementById('err');
-  err.textContent='';
-  if(!key){err.textContent='Clé API requise';return;}
-  err.textContent='Vérification...';
-  try{
-    const r=await fetch(API+'/ledger',{headers:{'x-api-key':key}});
-    if(r.status===401||r.status===422){err.textContent='Clé API invalide';return;}
-    const data=await r.json();
-    K=key;
-    show(data);
-  }catch(e){err.textContent='Erreur de connexion';}
+// ===== TRUSTPROTOCOL COMPLETE APP =====
+const API = 'https://api.trustprotocol.tech';
+
+// ===== ROUTING =====
+function showPage(page) {
+  ['landing','client','admin','cgv'].forEach(p => {
+    const el = document.getElementById('page-' + p);
+    if (el) el.style.display = (p === page) ? '' : 'none';
+  });
+  const landing = document.getElementById('tp-landing') || document.body.querySelector('nav');
+  if (page === 'landing') {
+    document.querySelectorAll('.tp-landing-section').forEach(s => s.style.display = '');
+  }
+  if (page === 'client' && !cKey) {
+    document.getElementById('client-login').style.display = '';
+    document.getElementById('client-dashboard').style.display = 'none';
+  }
+  if (page === 'admin' && !aKey) {
+    document.getElementById('admin-login').style.display = '';
+    document.getElementById('admin-dashboard').style.display = 'none';
+  }
 }
 
-function show(data){
-  document.getElementById('dashgate').style.display='none';
-  document.getElementById('dashboard').style.display='block';
-  const first=data.entries&&data.entries[0];
-  document.getElementById('client-name').textContent=first&&first.client||'Client';
-  allEntries=data.entries||[];
-  render(data);
-  setTimeout(loadAgents, 300);
+// Handle hash routing
+function routeFromHash() {
+  const h = location.hash.slice(1) || 'landing';
+  if (['client','admin','cgv'].includes(h)) showPage(h);
+  else showPage('landing');
+}
+window.addEventListener('hashchange', routeFromHash);
+
+// ===== CLIENT STATE =====
+let cKey = '', cEntries = [], cName = '', cPlan = '', cCurrentAgent = '';
+
+// ===== CLIENT AUTH =====
+async function clientLogin() {
+  const key = document.getElementById('c-key').value.trim();
+  const err = document.getElementById('c-err');
+  err.textContent = '';
+  if (!key) { err.textContent = 'Clé API requise'; return; }
+  err.textContent = 'Vérification...';
+  try {
+    const r = await fetch(API + '/ledger', { headers: { 'x-api-key': key } });
+    if (r.status === 401 || r.status === 422) { err.textContent = 'Clé API invalide'; return; }
+    const data = await r.json();
+    cKey = key;
+    cName = data.client || 'Client';
+    cPlan = data.plan || '';
+    cEntries = data.entries || [];
+    document.getElementById('client-login').style.display = 'none';
+    document.getElementById('client-dashboard').style.display = '';
+    document.getElementById('c-name').textContent = cName;
+    document.getElementById('c-plan').textContent = cPlan ? 'Plan ' + cPlan : '';
+    switchClientTab('overview');
+  } catch(e) { err.textContent = 'Erreur de connexion'; }
+}
+
+function clientLogout() {
+  cKey = ''; cEntries = []; cName = ''; cPlan = '';
+  document.getElementById('c-key').value = '';
+  document.getElementById('c-err').textContent = '';
+  document.getElementById('client-dashboard').style.display = 'none';
+  document.getElementById('client-login').style.display = '';
+}
+
+// ===== CLIENT TABS =====
+function switchClientTab(tab) {
+  document.querySelectorAll('.dash-tab[data-tab]').forEach(b => {
+    if (!b.closest('#admin-dashboard')) b.classList.toggle('active', b.dataset.tab === tab);
+  });
+  ['overview','ledger','agents','verify','settings'].forEach(t => {
+    const el = document.getElementById('c-tab-' + t);
+    if (el) el.style.display = (t === tab) ? '' : 'none';
+  });
+  if (tab === 'overview') loadOverview();
+  if (tab === 'ledger') renderLedger();
+  if (tab === 'agents') setTimeout(loadAgents, 100);
+  if (tab === 'settings') loadSettings();
+}
+
+// ===== CLIENT OVERVIEW =====
+function loadOverview() {
+  const entries = cEntries;
+  document.getElementById('cm-total').textContent = entries.length;
+  let cost = 0, blocked = 0;
+  const agents = new Set();
+  entries.forEach(e => { cost += parseFloat(e.cost_eur||0); agents.add(e.agent_id); if(e.blocked) blocked++; });
+  document.getElementById('cm-cost').textContent = cost.toFixed(4) + '€';
+  document.getElementById('cm-agents').textContent = agents.size;
+  const bEl = document.getElementById('cm-blocked');
+  bEl.textContent = blocked;
+  bEl.className = 'metric-value ' + (blocked > 0 ? 'red' : 'green');
+  // Recent
+  const recent = document.getElementById('c-recent');
+  const last5 = entries.slice().reverse().slice(0, 5);
+  if (!last5.length) { recent.innerHTML = '<div class="d-empty">Aucune attestation</div>'; }
+  else { recent.innerHTML = last5.map(entryRow).join(''); }
+  // Chain
   loadChain();
-  loadPubkey();
 }
 
-function render(data){
-  const entries=data.entries||[];
-  allEntries=entries;
-  document.getElementById('m-total').textContent=entries.length;
-  let cost=0;let blocked=0;const agents=new Set();
-  entries.forEach(e=>{cost+=parseFloat(e.cost_eur||0);if(e.agent_id)agents.add(e.agent_id);if(e.blocked)blocked++;});
-  document.getElementById('m-cost').textContent=cost.toFixed(4)+'€';
-  document.getElementById('m-agents').textContent=agents.size;
-  const bEl=document.getElementById('m-blocked');
-  bEl.textContent=blocked;
-  bEl.className='metric-value'+(blocked>0?' red':' green');
-  const body=document.getElementById('ledger-body');
-  if(!entries.length){body.innerHTML='<div class="empty">Aucune entrée</div>';return;}
-  body.innerHTML=entries.slice().reverse().slice(0,50).map(e=>{
-    const d=e.timestamp?new Date(e.timestamp).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
-    const ok=!e.blocked;
-    return '<div class="row ledger-row"><div><div class="agent-name">'+(e.agent_id||'—')+'</div><div class="action">'+(e.action||'—')+'</div></div><div class="cost">'+parseFloat(e.cost_eur||0).toFixed(4)+'€</div><div><span class="badge '+(ok?'ok':'fail')+'">'+(ok?'validé':'bloqué')+'</span></div><div style="font-size:11px;color:#8A847A;font-family:DM Mono,monospace">'+d+'</div></div>';
-  }).join('');
+function loadChain() {
+  fetch(API + '/verify-chain', { headers: { 'x-api-key': cKey } })
+    .then(r => r.json()).then(data => {
+      const valid = data.chain_valid;
+      document.getElementById('chain-dot').className = 'chain-dot' + (valid ? '' : ' invalid');
+      document.getElementById('chain-text').textContent = valid
+        ? 'Chaîne valide — ' + data.chain_length + ' blocs vérifiés (' + data.storage + ')'
+        : 'ALERTE — Intégrité de la chaîne compromise';
+      document.getElementById('cm-chain').textContent = valid ? '✓ OK' : '✗ ERR';
+      document.getElementById('cm-chain').className = 'metric-value ' + (valid ? 'green' : 'red');
+    }).catch(() => {});
 }
 
-async function loadLedger(){
-  document.getElementById('ledger-body').innerHTML='<div class="loading">Chargement...</div>';
-  try{const r=await fetch(API+'/ledger',{headers:{'x-api-key':K}});const data=await r.json();render(data);}
-  catch(e){document.getElementById('ledger-body').innerHTML='<div class="empty">Erreur</div>';}
+function entryRow(e) {
+  const d = e.timestamp ? new Date(e.timestamp).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
+  const ok = !e.blocked;
+  return '<div class="d-table-row d-ledger-row">'
+    + '<div><div class="d-mono">' + (e.agent_id||'—') + '</div><div style="font-size:11px;color:#8A847A">' + (e.action||'—') + '</div></div>'
+    + '<div class="d-mono">' + parseFloat(e.cost_eur||0).toFixed(4) + '€</div>'
+    + '<div><span class="badge ' + (ok ? 'badge-ok' : 'badge-fail') + '">' + (ok ? 'validé' : 'bloqué') + '</span></div>'
+    + '<div style="font-size:11px;color:#8A847A;font-family:'DM Mono',monospace">' + d + '</div>'
+    + '</div>';
 }
 
-async function loadAgents(){
-  const entries=allEntries;
-  const agents=[...new Set(entries.map(e=>e.agent_id).filter(Boolean))];
-  if(!agents.length){
-    document.getElementById('agents-body').innerHTML='<div class="empty">Aucun agent</div>';
-    return;
+// ===== CLIENT LEDGER =====
+function renderLedger() {
+  const search = (document.getElementById('ledger-search')||{}).value || '';
+  const statusFilter = (document.getElementById('ledger-status')||{}).value || '';
+  let entries = cEntries.slice().reverse();
+  if (search) {
+    const q = search.toLowerCase();
+    entries = entries.filter(e => (e.agent_id||'').toLowerCase().includes(q) || (e.action||'').toLowerCase().includes(q));
   }
-  document.getElementById('agents-body').innerHTML='<div class="loading">Chargement...</div>';
-  const results=await Promise.all(agents.map(async a=>{
-    try{const r=await fetch(API+'/budget/'+a,{headers:{'x-api-key':K}});return await r.json();}
-    catch(e){return{agent_id:a,spent:0,limit:0,remaining:0,blocked:false};}
+  if (statusFilter === 'valide') entries = entries.filter(e => !e.blocked);
+  if (statusFilter === 'bloque') entries = entries.filter(e => e.blocked);
+  const el = document.getElementById('c-ledger-body');
+  const count = document.getElementById('ledger-count');
+  if (count) count.textContent = entries.length + ' entrée' + (entries.length>1?'s':'');
+  if (!entries.length) { el.innerHTML = '<div class="d-empty">Aucune entrée</div>'; return; }
+  el.innerHTML = entries.slice(0, 100).map(entryRow).join('');
+}
+
+function exportJSON() {
+  const data = { client: cName, plan: cPlan, exported_at: new Date().toISOString(), entries: cEntries };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'trustprotocol-ledger-' + new Date().toISOString().split('T')[0] + '.json'; a.click();
+}
+
+function exportCSV() {
+  const rows = [['attestation_id','agent_id','action','cost_eur','status','timestamp','hash_sha256']];
+  cEntries.forEach(e => rows.push([e.attestation_id,e.agent_id,e.action,e.cost_eur,e.blocked?'bloqué':'validé',e.timestamp,e.hash_sha256]));
+  const csv = rows.map(r => r.map(v => '"'+(v||'').toString().replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'trustprotocol-ledger-' + new Date().toISOString().split('T')[0] + '.csv'; a.click();
+}
+
+// ===== CLIENT AGENTS =====
+async function loadAgents() {
+  const agents = [...new Set(cEntries.map(e => e.agent_id).filter(Boolean))];
+  const body = document.getElementById('c-agents-body');
+  if (!agents.length) { body.innerHTML = '<div class="d-empty">Aucun agent enregistré</div>'; return; }
+  body.innerHTML = '<div class="d-loading">Chargement...</div>';
+  const results = await Promise.all(agents.map(async a => {
+    try {
+      const r = await fetch(API + '/budget/' + a, { headers: { 'x-api-key': cKey } });
+      return await r.json();
+    } catch(e) { return { agent_id: a, spent: 0, limit: 0.15, remaining: 0.15, blocked: false }; }
   }));
-  document.getElementById('agents-body').innerHTML=results.map(a=>{
-    const pct=a.limit>0?Math.min(100,Math.round(a.spent/a.limit*100)):0;
-    const cls=pct>90?'danger':pct>70?'warn':'';
-    const statusCls=a.blocked?'fail':pct>90?'warn':'ok';
-    const statusTxt=a.blocked?'bloqué':pct>90?'critique':'actif';
-    return '<div class="row agent-row">'+
-      '<div class="agent-name">'+a.agent_id+'<div class="progress-bar"><div class="progress-fill '+cls+'" style="width:'+pct+'%"></div></div></div>'+
-      '<div class="cost">'+parseFloat(a.spent||0).toFixed(4)+'€</div>'+
-      '<div class="cost">'+parseFloat(a.limit||0).toFixed(4)+'€</div>'+
-      '<div class="cost">'+parseFloat(a.remaining||0).toFixed(4)+'€</div>'+
-      '<div><span class="badge '+statusCls+'">'+statusTxt+'</span> <button class="btn-sm" onclick="openModal(\''+a.agent_id+'\','+a.limit+')" style="margin-left:4px">Éditer</button></div>'+
-      '</div>';
+  body.innerHTML = results.map(a => {
+    const pct = a.limit > 0 ? Math.min(100, Math.round(a.spent / a.limit * 100)) : 0;
+    const cls = pct > 90 ? 'danger' : pct > 70 ? 'warn' : '';
+    const sCls = a.blocked ? 'badge-fail' : pct > 90 ? 'badge-warn' : 'badge-ok';
+    const sTxt = a.blocked ? 'bloqué' : pct > 90 ? 'critique' : 'actif';
+    return '<div class="d-table-row d-agent-row">'
+      + '<div><div class="d-mono">' + a.agent_id + '</div><div class="progress-bar"><div class="progress-fill ' + cls + '" style="width:' + pct + '%"></div></div></div>'
+      + '<div class="d-mono">' + parseFloat(a.spent||0).toFixed(4) + '€</div>'
+      + '<div class="d-mono">' + parseFloat(a.limit||0).toFixed(4) + '€</div>'
+      + '<div class="d-mono">' + parseFloat(a.remaining||0).toFixed(4) + '€</div>'
+      + '<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge ' + sCls + '">' + sTxt + '</span>'
+      + '<button class="d-btn-sm" onclick="openBudgetModal('' + a.agent_id + '',' + a.limit + ')">Éditer</button>'
+      + '<button class="d-btn-sm d-btn-danger" onclick="resetBudget('' + a.agent_id + '')">Reset</button>'
+      + '</div></div>';
   }).join('');
 }
 
-async function loadChain(){
-  try{
-    const r=await fetch(API+'/verify-chain',{headers:{'x-api-key':K}});
-    const data=await r.json();
-    const valid=data.chain_valid;
-    document.getElementById('chain-dot').className='chain-dot'+(valid?'':' invalid');
-    document.getElementById('chain-text').textContent=valid?
-      'Chaîne valide — '+data.chain_length+' blocs vérifiés ('+data.storage+')':
-      'Chaîne corrompue — intégrité compromise';
-    document.getElementById('m-chain').textContent=valid?'✓ OK':'✗ ERR';
-    document.getElementById('m-chain').className='metric-value'+(valid?' green':' red');
-  }catch(e){document.getElementById('chain-text').textContent='Erreur de vérification';}
+function openBudgetModal(agentId, currentLimit) {
+  cCurrentAgent = agentId;
+  document.getElementById('budget-modal-agent').textContent = 'Agent : ' + agentId;
+  document.getElementById('budget-modal-limit').value = currentLimit || '';
+  document.getElementById('budget-modal-err').textContent = '';
+  document.getElementById('budget-modal').className = 'modal-overlay active';
 }
+function closeBudgetModal() { document.getElementById('budget-modal').className = 'modal-overlay'; cCurrentAgent = ''; }
 
-async function loadPubkey(){
-  try{
-    const r=await fetch(API+'/pubkey');
-    const data=await r.json();
-    document.getElementById('pubkey').textContent=data.public_key_pem||JSON.stringify(data);
-  }catch(e){document.getElementById('pubkey').textContent='Non disponible';}
-}
-
-function openModal(agentId,currentLimit){
-  currentAgent=agentId;
-  document.getElementById('modal-agent-name').textContent='Agent : '+agentId;
-  document.getElementById('modal-limit').value=currentLimit||'';
-  document.getElementById('modal-err').textContent='';
-  document.getElementById('budget-modal').className='modal-overlay active';
-}
-
-function closeModal(){
-  document.getElementById('budget-modal').className='modal-overlay';
-  currentAgent='';
-}
-
-async function saveBudget(){
-  const limit=parseFloat(document.getElementById('modal-limit').value);
-  const err=document.getElementById('modal-err');
-  if(isNaN(limit)||limit<0){err.textContent='Valeur invalide';return;}
-  try{
-    const r=await fetch(API+'/budget/'+currentAgent,{
-      method:'POST',
-      headers:{'x-api-key':K,'Content-Type':'application/json'},
-      body:JSON.stringify({limit_eur:limit})
+async function saveBudgetLimit() {
+  const limit = parseFloat(document.getElementById('budget-modal-limit').value);
+  const err = document.getElementById('budget-modal-err');
+  if (isNaN(limit) || limit < 0) { err.textContent = 'Valeur invalide'; return; }
+  try {
+    const r = await fetch(API + '/budget/' + cCurrentAgent, {
+      method: 'POST', headers: { 'x-api-key': cKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ limit_eur: limit })
     });
-    if(r.ok){closeModal();loadAgents();}
-    else{err.textContent='Erreur lors de la sauvegarde';}
-  }catch(e){err.textContent='Erreur de connexion';}
+    if (r.ok) { closeBudgetModal(); loadAgents(); }
+    else { err.textContent = 'Erreur lors de la sauvegarde'; }
+  } catch(e) { err.textContent = 'Erreur de connexion'; }
 }
 
-function exportJSON(){
-  const data={client:document.getElementById('client-name').textContent,exported_at:new Date().toISOString(),entries:allEntries};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='trustprotocol-ledger-'+new Date().toISOString().split('T')[0]+'.json';
-  a.click();
+async function resetBudget(agentId) {
+  if (!confirm('Réinitialiser le budget de ' + agentId + ' à 0 ?')) return;
+  try {
+    await fetch(API + '/budget/' + agentId + '/reset', { method: 'DELETE', headers: { 'x-api-key': cKey } });
+    loadAgents();
+  } catch(e) {}
 }
 
-function logout(){K='';allEntries=[];document.getElementById('dashboard').style.display='none';document.getElementById('dashgate').style.display='block';document.getElementById('apikey').value='';document.getElementById('err').textContent='';}
-document.getElementById('apikey').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
-document.getElementById('budget-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+// ===== CLIENT VERIFY =====
+async function verifyAttestation() {
+  const id = document.getElementById('verify-id').value.trim();
+  const err = document.getElementById('verify-err');
+  const result = document.getElementById('verify-result');
+  err.textContent = ''; result.innerHTML = '';
+  if (!id) { err.textContent = 'ID requis'; return; }
+  err.textContent = 'Vérification...';
+  try {
+    const r = await fetch(API + '/verify/' + id, { headers: { 'x-api-key': cKey } });
+    if (r.status === 404) { err.textContent = 'Attestation introuvable'; return; }
+    const data = await r.json();
+    err.textContent = '';
+    const ok = data.integrity;
+    const d = data.timestamp ? new Date(data.timestamp).toLocaleString('fr-FR') : '—';
+    result.innerHTML = '<div class="d-verify-result ' + (ok ? 'ok' : 'fail') + '">'
+      + '<div style="font-size:14px;font-weight:600;margin-bottom:12px;font-family:'DM Sans',sans-serif">' + (ok ? '✅ Attestation valide' : '❌ Attestation invalide') + '</div>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;font-family:'DM Mono',monospace">'
+      + '<div>Hash SHA-256</div><div>' + (data.hash_valid ? '✓ Valide' : '✗ Invalide') + '</div>'
+      + '<div>Signature RSA</div><div>' + (data.signature_valid ? '✓ Valide' : '✗ Invalide') + '</div>'
+      + '<div>Agent</div><div>' + (data.agent_id||'—') + '</div>'
+      + '<div>Action</div><div>' + (data.action||'—') + '</div>'
+      + '<div>Date</div><div>' + d + '</div>'
+      + '<div>Coût</div><div>' + parseFloat(data.cost_eur||0).toFixed(4) + '€</div>'
+      + '<div>Statut</div><div>' + (data.blocked ? 'Bloqué' : 'Validé') + '</div>'
+      + '<div>Bloc #</div><div>' + (data.chain_height||'—') + '</div>'
+      + '</div>'
+      + '<div style="margin-top:12px;font-size:10px;font-family:'DM Mono',monospace;color:#8A847A;word-break:break-all">' + (data.hash_sha256||'') + '</div>'
+      + '</div>';
+  } catch(e) { err.textContent = 'Erreur de connexion'; }
+}
+
+// ===== CLIENT SETTINGS =====
+async function loadSettings() {
+  document.getElementById('s-name').textContent = cName;
+  document.getElementById('s-plan').innerHTML = '<span class="badge badge-blue">' + (cPlan || 'starter').toUpperCase() + '</span>';
+  document.getElementById('s-key').textContent = maskKey(cKey);
+  document.getElementById('s-key').dataset.key = cKey;
+  document.getElementById('s-key').dataset.masked = '1';
+  // Curl example
+  document.getElementById('s-curl-example').textContent =
+    'curl -X POST https://api.trustprotocol.tech/intercept \
+' +
+    '  -H "x-api-key: ' + cKey + '" \
+' +
+    '  -H "Content-Type: application/json" \
+' +
+    '  -d '{"agent_id":"mon-agent","action":"Envoi email","cost_eur":0.05}'';
+  document.getElementById('s-python-example').textContent =
+    'import requests
+' +
+    'r = requests.post(
+' +
+    '    "https://api.trustprotocol.tech/intercept",
+' +
+    '    headers={"x-api-key": "' + cKey + '"},
+' +
+    '    json={"agent_id": "mon-agent", "action": "Envoi email", "cost_eur": 0.05}
+' +
+    ')
+print(r.json())';
+  // Pubkey
+  try {
+    const r = await fetch(API + '/pubkey');
+    const data = await r.json();
+    document.getElementById('s-pubkey').textContent = data.public_key_pem || '—';
+  } catch(e) {}
+}
+
+function maskKey(k) { return k ? k.slice(0,6) + '••••••••••••••••' + k.slice(-4) : '—'; }
+
+function toggleKey() {
+  const el = document.getElementById('s-key');
+  if (el.dataset.masked === '1') { el.textContent = el.dataset.key; el.dataset.masked = '0'; }
+  else { el.textContent = maskKey(el.dataset.key); el.dataset.masked = '1'; }
+}
+function copyKey() {
+  const key = document.getElementById('s-key').dataset.key;
+  navigator.clipboard.writeText(key).then(() => alert('Clé copiée !')).catch(() => {});
+}
+
+// ===== ADMIN STATE =====
+let aKey = '';
+
+// ===== ADMIN AUTH =====
+async function adminLogin() {
+  const key = document.getElementById('a-key').value.trim();
+  const err = document.getElementById('a-err');
+  err.textContent = '';
+  if (!key) { err.textContent = 'Clé admin requise'; return; }
+  err.textContent = 'Vérification...';
+  try {
+    const r = await fetch(API + '/admin/stats', { headers: { 'x-admin-key': key } });
+    if (r.status === 401 || r.status === 503) { err.textContent = 'Clé admin invalide'; return; }
+    const data = await r.json();
+    aKey = key;
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-dashboard').style.display = '';
+    updateAdminStats(data);
+    switchAdminTab('clients');
+  } catch(e) { err.textContent = 'Erreur de connexion'; }
+}
+
+function adminLogout() {
+  aKey = '';
+  document.getElementById('a-key').value = '';
+  document.getElementById('admin-dashboard').style.display = 'none';
+  document.getElementById('admin-login').style.display = '';
+}
+
+function updateAdminStats(data) {
+  document.getElementById('as-active').textContent = data.clients_actifs || 0;
+  document.getElementById('as-att').textContent = data.attestations_totales || 0;
+  document.getElementById('as-cost').textContent = (data.cout_total_eur || 0).toFixed(4) + '€';
+  document.getElementById('as-demos').textContent = data.demandes_demo || 0;
+}
+
+// ===== ADMIN TABS =====
+function switchAdminTab(tab) {
+  document.querySelectorAll('#admin-dashboard .dash-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  ['clients','create','demos'].forEach(t => {
+    const el = document.getElementById('a-tab-' + t);
+    if (el) el.style.display = (t === tab) ? '' : 'none';
+  });
+  if (tab === 'clients') loadAdminClients();
+  if (tab === 'demos') loadDemoRequests();
+  if (tab === 'create') { document.getElementById('nc-result').style.display = 'none'; document.getElementById('nc-err').textContent = ''; }
+}
+
+// ===== ADMIN CLIENTS =====
+async function loadAdminClients() {
+  const body = document.getElementById('a-clients-body');
+  body.innerHTML = '<div class="d-loading">Chargement...</div>';
+  try {
+    const r = await fetch(API + '/admin/clients', { headers: { 'x-admin-key': aKey } });
+    const data = await r.json();
+    const clients = data.clients || [];
+    if (!clients.length) { body.innerHTML = '<div class="d-empty">Aucun client</div>'; return; }
+    body.innerHTML = clients.map(c => {
+      const d = c.created_at ? new Date(c.created_at).toLocaleDateString('fr-FR') : '—';
+      const sCls = c.active ? 'badge-ok' : 'badge-fail';
+      const sTxt = c.active ? 'actif' : 'inactif';
+      return '<div class="d-table-row" style="grid-template-columns:1.5fr 1fr 1.5fr 1fr 1fr 1fr">'
+        + '<div style="font-weight:500">' + c.client_name + '<div style="font-size:11px;color:#8A847A">' + d + '</div></div>'
+        + '<div><span class="badge badge-blue">' + (c.plan||'').toUpperCase() + '</span></div>'
+        + '<div class="d-mono" style="font-size:10px">' + c.api_key_masked + '</div>'
+        + '<div class="d-mono">' + (c.total_attestations||0) + '</div>'
+        + '<div><span class="badge ' + sCls + '">' + sTxt + '</span></div>'
+        + '<div style="display:flex;gap:4px">'
+        + (c.active
+          ? '<button class="d-btn-sm d-btn-danger" onclick="revokeClient(' + c.id + ')">Révoquer</button>'
+          : '<button class="d-btn-sm" onclick="activateClient(' + c.id + ')">Réactiver</button>')
+        + '</div></div>';
+    }).join('');
+    // Refresh stats
+    const sr = await fetch(API + '/admin/stats', { headers: { 'x-admin-key': aKey } });
+    updateAdminStats(await sr.json());
+  } catch(e) { body.innerHTML = '<div class="d-empty">Erreur de chargement</div>'; }
+}
+
+async function revokeClient(id) {
+  if (!confirm('Révoquer ce client ? Il ne pourra plus accéder au service.')) return;
+  await fetch(API + '/admin/clients/' + id + '/revoke', { method: 'PUT', headers: { 'x-admin-key': aKey } });
+  loadAdminClients();
+}
+async function activateClient(id) {
+  await fetch(API + '/admin/clients/' + id + '/activate', { method: 'PUT', headers: { 'x-admin-key': aKey } });
+  loadAdminClients();
+}
+
+// ===== ADMIN CREATE CLIENT =====
+async function createClient() {
+  const name = document.getElementById('nc-name').value.trim();
+  const plan = document.getElementById('nc-plan').value;
+  const err = document.getElementById('nc-err');
+  err.textContent = '';
+  if (!name) { err.textContent = 'Nom requis'; return; }
+  try {
+    const r = await fetch(API + '/admin/clients', {
+      method: 'POST',
+      headers: { 'x-admin-key': aKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ client_name: name, plan })
+    });
+    const data = await r.json();
+    if (!data.created) { err.textContent = 'Erreur lors de la création'; return; }
+    document.getElementById('nc-key').textContent = data.api_key;
+    document.getElementById('nc-result').style.display = '';
+    document.getElementById('nc-name').value = '';
+    loadAdminClients();
+  } catch(e) { err.textContent = 'Erreur de connexion'; }
+}
+
+function copyNewKey() {
+  const key = document.getElementById('nc-key').textContent;
+  navigator.clipboard.writeText(key).then(() => alert('Clé copiée !')).catch(() => {});
+}
+
+// ===== ADMIN DEMOS =====
+async function loadDemoRequests() {
+  const body = document.getElementById('a-demos-body');
+  body.innerHTML = '<div class="d-loading">Chargement...</div>';
+  try {
+    const r = await fetch(API + '/admin/demo-requests', { headers: { 'x-admin-key': aKey } });
+    const data = await r.json();
+    const reqs = data.requests || [];
+    if (!reqs.length) { body.innerHTML = '<div class="d-empty">Aucune demande</div>'; return; }
+    body.innerHTML = reqs.map(q => {
+      const d = q.created_at ? new Date(q.created_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
+      return '<div class="d-table-row" style="grid-template-columns:1fr 1fr 1fr 2fr 1fr;font-size:12px">'
+        + '<div>' + (q.name||'—') + '</div>'
+        + '<div class="d-mono" style="font-size:10px">' + (q.email||'—') + '</div>'
+        + '<div>' + (q.company||'—') + '</div>'
+        + '<div style="color:#8A847A">' + (q.message||'—').slice(0,80) + '</div>'
+        + '<div class="d-mono" style="font-size:10px">' + d + '</div>'
+        + '</div>';
+    }).join('');
+  } catch(e) { body.innerHTML = '<div class="d-empty">Erreur</div>'; }
+}
+
+// ===== DEMO MODAL =====
+function openDemoModal() { document.getElementById('demo-modal').className = 'modal-overlay active'; }
+function closeDemoModal() { document.getElementById('demo-modal').className = 'modal-overlay'; }
+
+async function submitDemo() {
+  const name = document.getElementById('dm-name').value.trim();
+  const email = document.getElementById('dm-email').value.trim();
+  const company = document.getElementById('dm-company').value.trim();
+  const message = document.getElementById('dm-message').value.trim();
+  const err = document.getElementById('dm-err');
+  const ok = document.getElementById('dm-ok');
+  err.textContent = ''; ok.textContent = '';
+  if (!name) { err.textContent = 'Nom requis'; return; }
+  if (!email || !email.includes('@')) { err.textContent = 'Email invalide'; return; }
+  try {
+    const r = await fetch(API + '/demo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, company, message })
+    });
+    const data = await r.json();
+    if (data.received) {
+      ok.textContent = 'Demande envoyée ! Nous vous contacterons rapidement.';
+      document.getElementById('dm-name').value = '';
+      document.getElementById('dm-email').value = '';
+      document.getElementById('dm-company').value = '';
+      document.getElementById('dm-message').value = '';
+      setTimeout(closeDemoModal, 2000);
+    }
+  } catch(e) { err.textContent = 'Erreur de connexion'; }
+}
+
+// Init on load
+document.addEventListener('DOMContentLoaded', function() {
+  routeFromHash();
+});
+
 </script>
 
-</div>
-<script>
-// Détecter /client et afficher le dashboard
-(function(){
-  if(window.__TP_CLIENT__){
-    document.getElementById('tp-dashboard-page').style.display='block';
-    document.body.style.overflow='hidden';
-    var landingGate=document.getElementById('gate');if(landingGate)landingGate.style.display='none';
-  }
-})();
-</script>
 </body>
 </html>
