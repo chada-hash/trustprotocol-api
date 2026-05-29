@@ -44,11 +44,15 @@ def get_db():
 # ============================================================
 # CRYPTO — RSA key pair
 # ============================================================
-_PRIVATE_KEY = rsa.generate_private_key(
-    public_exponent=65537,
-    key_size=2048,
-    backend=default_backend()
-)
+_key_pem = os.getenv("RSA_PRIVATE_KEY")
+if _key_pem:
+    _PRIVATE_KEY = serialization.load_pem_private_key(
+        _key_pem.encode(), password=None, backend=default_backend()
+    )
+else:
+    _PRIVATE_KEY = rsa.generate_private_key(
+        public_exponent=65537, key_size=2048, backend=default_backend()
+    )
 _PUBLIC_KEY = _PRIVATE_KEY.public_key()
 _PUBLIC_KEY_PEM = _PUBLIC_KEY.public_bytes(
     serialization.Encoding.PEM,
