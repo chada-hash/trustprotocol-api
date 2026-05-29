@@ -1253,8 +1253,8 @@ async function loadAgents() {
       + '<div class="d-mono">' + parseFloat(a.limit||0).toFixed(4) + '€</div>'
       + '<div class="d-mono">' + parseFloat(a.remaining||0).toFixed(4) + '€</div>'
       + '<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge ' + sCls + '">' + sTxt + '</span>'
-      + '<button class="d-btn-sm" onclick="openBudgetModal('' + a.agent_id + '',' + a.limit + ')">Éditer</button>'
-      + '<button class="d-btn-sm d-btn-danger" onclick="resetBudget('' + a.agent_id + '')">Reset</button>'
+      + '<button class="d-btn-sm" data-agent="' + a.agent_id + '" data-limit="' + a.limit + '" onclick="openBudgetModalEl(this)">Éditer</button>'
+      + '<button class="d-btn-sm d-btn-danger" data-agent="' + a.agent_id + '" onclick="resetBudgetEl(this)">Reset</button>'
       + '</div></div>';
   }).join('');
 }
@@ -1265,6 +1265,9 @@ function openBudgetModal(agentId, currentLimit) {
   document.getElementById('budget-modal-limit').value = currentLimit || '';
   document.getElementById('budget-modal-err').textContent = '';
   document.getElementById('budget-modal').className = 'modal-overlay active';
+}
+function openBudgetModalEl(el) {
+  openBudgetModal(el.dataset.agent, parseFloat(el.dataset.limit));
 }
 function closeBudgetModal() { document.getElementById('budget-modal').className = 'modal-overlay'; cCurrentAgent = ''; }
 
@@ -1289,6 +1292,7 @@ async function resetBudget(agentId) {
     loadAgents();
   } catch(e) {}
 }
+function resetBudgetEl(el) { resetBudget(el.dataset.agent); }
 
 // ===== CLIENT VERIFY =====
 async function verifyAttestation() {
@@ -1306,7 +1310,7 @@ async function verifyAttestation() {
     const ok = data.integrity;
     const d = data.timestamp ? new Date(data.timestamp).toLocaleString('fr-FR') : '—';
     result.innerHTML = '<div class="d-verify-result ' + (ok ? 'ok' : 'fail') + '">'
-      + '<div style="font-size:14px;font-weight:600;margin-bottom:12px;font-family:'DM Sans',sans-serif">' + (ok ? '✅ Attestation valide' : '❌ Attestation invalide') + '</div>'
+      + '<div style="font-size:14px;font-weight:600;margin-bottom:12px;font-family:DM Sans,sans-serif">' + (ok ? '✅ Attestation valide' : '❌ Attestation invalide') + '</div>'
       + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;font-family:DM Mono,monospace">'
       + '<div>Hash SHA-256</div><div>' + (data.hash_valid ? '✓ Valide' : '✗ Invalide') + '</div>'
       + '<div>Signature RSA</div><div>' + (data.signature_valid ? '✓ Valide' : '✗ Invalide') + '</div>'
@@ -1329,29 +1333,22 @@ async function loadSettings() {
   document.getElementById('s-key').textContent = maskKey(cKey);
   document.getElementById('s-key').dataset.key = cKey;
   document.getElementById('s-key').dataset.masked = '1';
-  // Curl example
-  document.getElementById('s-curl-example').textContent =
-    'curl -X POST https://api.trustprotocol.tech/intercept \
-' +
-    '  -H "x-api-key: ' + cKey + '" \
-' +
-    '  -H "Content-Type: application/json" \
-' +
-    '  -d '{"agent_id":"mon-agent","action":"Envoi email","cost_eur":0.05}'';
-  document.getElementById('s-python-example').textContent =
-    'import requests
-' +
-    'r = requests.post(
-' +
-    '    "https://api.trustprotocol.tech/intercept",
-' +
-    '    headers={"x-api-key": "' + cKey + '"},
-' +
-    '    json={"agent_id": "mon-agent", "action": "Envoi email", "cost_eur": 0.05}
-' +
-    ')
-print(r.json())';
-  // Pubkey
+  var jsonBody = JSON.stringify({agent_id:"mon-agent",action:"Envoi email",cost_eur:0.05});
+  var curlLines = [];
+  curlLines.push('curl -X POST https://api.trustprotocol.tech/intercept \\');
+  curlLines.push('  -H "x-api-key: ' + cKey + '" \\');
+  curlLines.push('  -H "Content-Type: application/json" \\');
+  curlLines.push("  -d '" + jsonBody + "'");
+  document.getElementById('s-curl-example').textContent = curlLines.join('\n');
+  var pyLines = [];
+  pyLines.push('import requests');
+  pyLines.push('r = requests.post(');
+  pyLines.push('    "https://api.trustprotocol.tech/intercept",');
+  pyLines.push('    headers={"x-api-key": "' + cKey + '"},');
+  pyLines.push('    json={"agent_id": "mon-agent", "action": "Envoi email", "cost_eur": 0.05}');
+  pyLines.push(')');
+  pyLines.push('print(r.json())');
+  document.getElementById('s-python-example').textContent = pyLines.join('\n');
   try {
     const r = await fetch(API + '/pubkey');
     const data = await r.json();
