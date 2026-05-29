@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TrustProtocol — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#FAFAF7;color:#16181A;min-height:100vh;padding:2rem}
+:root{--fern:#3B6E3F;--fern-dp:#244A26;--bg:#FAFAF7;--bg2:#F1EFE9;--line:#E2DED5;--ink:#16181A;--ink2:#4A4742;--mut:#8A847A;--red:#B23A3A;--green:#3B6E3F}
+.wrap{max-width:800px;margin:0 auto}
+.gate{background:#fff;border:1px solid var(--line);border-radius:4px;padding:2.5rem;max-width:400px;margin:4rem auto}
+.gate h2{font-size:20px;font-weight:500;margin-bottom:4px}
+.gate p{font-size:13px;color:var(--mut);margin-bottom:1.5rem}
+label{display:block;font-size:11px;font-family:'DM Mono',monospace;color:var(--mut);margin-bottom:6px;letter-spacing:.06em;text-transform:uppercase}
+input[type=password],input[type=text]{width:100%;padding:11px 14px;border:1px solid var(--line);background:var(--bg);font-family:'DM Mono',monospace;font-size:13px;outline:none;border-radius:2px}
+input:focus{border-color:var(--fern)}
+.btn{width:100%;padding:12px;background:var(--fern);color:#fff;border:none;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:12px}
+.btn:hover{background:var(--fern-dp)}
+.btn-sm{padding:6px 14px;font-size:10px;width:auto;margin-top:0;background:transparent;border:1px solid var(--line);color:var(--mut);border-radius:2px}
+.btn-sm:hover{background:var(--bg2)}
+.err{font-size:11px;font-family:'DM Mono',monospace;color:var(--red);margin-top:8px;min-height:16px}
+.dashboard{display:none}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--line)}
+.topbar h2{font-size:16px;font-weight:500}
+.topbar p{font-size:11px;font-family:'DM Mono',monospace;color:var(--mut);margin-top:2px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:2rem}
+.metric{background:#fff;border:1px solid var(--line);border-radius:4px;padding:1rem}
+.metric-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--mut);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.metric-value{font-size:20px;font-weight:500}
+.section-title{font-size:10px;font-family:'DM Mono',monospace;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.card{background:#fff;border:1px solid var(--line);border-radius:4px;overflow:hidden;margin-bottom:2rem}
+.row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:12px;align-items:center}
+.row:last-child{border-bottom:none}
+.row.header{background:var(--bg2);font-family:'DM Mono',monospace;font-size:10px;color:var(--mut)}
+.agent{font-weight:500;font-family:'DM Mono',monospace;font-size:11px}
+.action{color:var(--mut);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cost{font-family:'DM Mono',monospace;font-size:11px}
+.badge{font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:2px;display:inline-block}
+.ok{background:#EEF3E9;color:var(--green)}
+.fail{background:#FBEAEA;color:var(--red)}
+.empty{padding:2rem;text-align:center;color:var(--mut);font-size:13px}
+.loading{padding:14px;text-align:center;font-size:12px;color:var(--mut);font-family:'DM Mono',monospace}
+.pubkey{background:var(--bg2);border-radius:4px;padding:12px 14px;font-family:'DM Mono',monospace;font-size:10px;color:var(--mut);word-break:break-all;line-height:1.6}
+.row-flex{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="gate" id="gate">
+  <h2>TrustProtocol</h2>
+  <p>Accès client — entrez votre clé API</p>
+  <label>Clé API</label>
+  <input type="password" id="apikey" placeholder="xxxx-xxxx-xxxx" autocomplete="off">
+  <button class="btn" onclick="login()">Accéder au ledger</button>
+  <div class="err" id="err"></div>
+</div>
+<div class="dashboard" id="dashboard">
+  <div class="topbar">
+    <div><h2 id="client-name">Dashboard</h2><p id="client-plan"></p></div>
+    <button class="btn btn-sm" onclick="logout()">Déconnexion</button>
+  </div>
+  <div class="metrics">
+    <div class="metric"><div class="metric-label">Entrées</div><div class="metric-value" id="m-total">—</div></div>
+    <div class="metric"><div class="metric-label">Coût total</div><div class="metric-value" id="m-cost">—</div></div>
+    <div class="metric"><div class="metric-label">Agents</div><div class="metric-value" id="m-agents">—</div></div>
+    <div class="metric"><div class="metric-label">Plan</div><div class="metric-value" id="m-plan">—</div></div>
+  </div>
+  <div class="row-flex">
+    <div class="section-title">Ledger des attestations</div>
+    <button class="btn btn-sm" onclick="loadLedger()">↻ Rafraîchir</button>
+  </div>
+  <div class="card">
+    <div class="row header"><span>Agent / Action</span><span>Coût €</span><span>Statut</span><span>Date</span></div>
+    <div id="ledger-body"><div class="loading">Chargement...</div></div>
+  </div>
+  <div class="section-title">Clé publique RSA</div>
+  <div class="pubkey" id="pubkey">Chargement...</div>
+</div>
+</div>
+<script>
+const API='https://api.trustprotocol.tech';
+let K='';
+async function login(){
+  const key=document.getElementById('apikey').value.trim();
+  const err=document.getElementById('err');
+  err.textContent='';
+  if(!key){err.textContent='Clé API requise';return;}
+  err.textContent='Vérification...';
+  try{
+    const r=await fetch(API+'/ledger',{headers:{'x-api-key':key}});
+    if(r.status===401){err.textContent='Clé API invalide';return;}
+    const data=await r.json();
+    K=key;
+    show(data);
+  }catch(e){err.textContent='Erreur de connexion';}
+}
+function show(data){
+  document.getElementById('gate').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  document.getElementById('client-name').textContent=data.client||'Client';
+  document.getElementById('client-plan').textContent=data.plan?'Plan '+data.plan:'';
+  document.getElementById('m-plan').textContent=data.plan||'—';
+  render(data);
+  loadPubkey();
+}
+function render(data){
+  const entries=data.entries||data.ledger||[];
+  document.getElementById('m-total').textContent=entries.length;
+  let cost=0;const agents=new Set();
+  entries.forEach(e=>{cost+=parseFloat(e.cost_eur||0);if(e.agent_id)agents.add(e.agent_id);});
+  document.getElementById('m-cost').textContent=cost.toFixed(4)+'€';
+  document.getElementById('m-agents').textContent=agents.size;
+  const body=document.getElementById('ledger-body');
+  if(!entries.length){body.innerHTML='<div class="empty">Aucune entrée</div>';return;}
+  body.innerHTML=entries.slice().reverse().slice(0,50).map(e=>{
+    const d=e.timestamp?new Date(e.timestamp).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+    const ok=e.status==='intercepted'||e.status==='ok'||e.circuit_open===false;
+    return '<div class="row"><div><div class="agent">'+( e.agent_id||'—')+'</div><div class="action">'+(e.action||'—')+'</div></div><div class="cost">'+parseFloat(e.cost_eur||0).toFixed(4)+'€</div><div><span class="badge '+(ok?'ok':'fail')+'">'+(e.status||'—')+'</span></div><div style="font-size:11px;color:#8A847A;font-family:DM Mono,monospace">'+d+'</div></div>';
+  }).join('');
+}
+async function loadLedger(){
+  document.getElementById('ledger-body').innerHTML='<div class="loading">Chargement...</div>';
+  try{const r=await fetch(API+'/ledger',{headers:{'x-api-key':K}});const data=await r.json();render(data);}
+  catch(e){document.getElementById('ledger-body').innerHTML='<div class="empty">Erreur</div>';}
+}
+async function loadPubkey(){
+  try{const r=await fetch(API+'/pubkey');const data=await r.json();document.getElementById('pubkey').textContent=data.public_key||JSON.stringify(data);}
+  catch(e){document.getElementById('pubkey').textContent='Non disponible';}
+}
+function logout(){K='';document.getElementById('dashboard').style.display='none';document.getElementById('gate').style.display='block';document.getElementById('apikey').value='';document.getElementById('err').textContent='';}
+document.getElementById('apikey').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
+</script>
+</body>
+</html>
