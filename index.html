@@ -360,6 +360,7 @@ footer{border-top:1px solid var(--line);background:var(--paper)}
 </style>
 </head>
 <body>
+<div id="page-landing">
 <div id="gate">
 <div class="gate-card">
 <svg width="38" height="38" viewBox="0 0 40 40" fill="none"><polygon points="20,2 28,6 36,6 38,14 34,20 38,26 36,34 28,34 20,38 12,34 4,34 2,26 6,20 2,14 4,6 12,6" stroke="#3B6E3F" stroke-width="1.4" fill="none"/><circle cx="20" cy="20" r="7" stroke="#3B6E3F" stroke-width=".9" fill="none"/></svg>
@@ -719,6 +720,7 @@ function resetDemo(){
 </script>
 
 
+</div>
 
 <!-- ===== CLIENT SECTION ===== -->
 <div id="page-client" style="display:none;position:fixed;inset:0;background:#FAFAF7;z-index:10000;overflow-y:auto">
@@ -1082,10 +1084,6 @@ function showPage(page) {
     const el = document.getElementById('page-' + p);
     if (el) el.style.display = (p === page) ? '' : 'none';
   });
-  const landing = document.getElementById('tp-landing') || document.body.querySelector('nav');
-  if (page === 'landing') {
-    document.querySelectorAll('.tp-landing-section').forEach(s => s.style.display = '');
-  }
   if (page === 'client' && !cKey) {
     document.getElementById('client-login').style.display = '';
     document.getElementById('client-dashboard').style.display = 'none';
