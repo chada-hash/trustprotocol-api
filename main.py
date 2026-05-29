@@ -33,16 +33,11 @@ app.add_middleware(
 # ============================================================
 # DATABASE
 # ============================================================
-DB_CONFIG = {
-    "dbname": "trustprotocol",
-    "user": "tpuser",
-    "password": "tppassword",
-    "host": "localhost",
-    "port": 5432
-}
+import os
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://tpuser:tppassword@localhost:5432/trustprotocol")
 
 def get_db():
-    conn = psycopg2.connect(**DB_CONFIG)
+    conn = psycopg2.connect(DATABASE_URL)
     conn.autocommit = False
     return conn
 
