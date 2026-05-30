@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
-<title>TrustProtocol — La garde souveraine de vos agents IA</title>
+<title>TrustProtocol — The sovereign guardian of your AI agents</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -372,17 +372,20 @@ footer{border-top:1px solid var(--line);background:var(--paper)}
 </div></div>
 <nav id="nav"><div class="wrap" style="display:flex;align-items:center;justify-content:space-between;padding-top:0;padding-bottom:0;width:100%">
 <div class="nb"><svg width="28" height="28" viewBox="0 0 40 40" fill="none"><polygon points="20,2 28,6 36,6 38,14 34,20 38,26 36,34 28,34 20,38 12,34 4,34 2,26 6,20 2,14 4,6 12,6" stroke="#3B6E3F" stroke-width="1.4" fill="none"/><circle cx="20" cy="20" r="7" stroke="#3B6E3F" stroke-width=".9" fill="none"/></svg><span class="nb-t">Trust<span>Protocol</span></span></div>
-<ul class="nl"><li><a href="#how">Fonctionnement</a></li><li><a href="#att">Attestation</a></li><li><a href="#demo">D&eacute;mo</a></li><li><a href="#prix">Tarifs</a></li></ul>
-<a href="#cta" class="ncta">Demander une d&eacute;mo</a>
+<ul class="nl"><li><a href="#how" data-en="How it works" data-fr="Fonctionnement">How it works</a></li><li><a href="#att" data-en="Attestation" data-fr="Attestation">Attestation</a></li><li><a href="#demo" data-en="Demo" data-fr="Démo">Demo</a></li><li><a href="#prix" data-en="Pricing" data-fr="Tarifs">Pricing</a></li></ul>
+<div style="display:flex;align-items:center;gap:12px">
+<button id="lang-toggle" onclick="toggleLang()" style="background:transparent;border:1px solid var(--line);color:var(--mut);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;padding:5px 10px;border-radius:2px;cursor:pointer">FR</button>
+<a href="#cta" class="ncta" data-en="Request a demo" data-fr="Demander une démo">Request a demo</a>
+</div>
 </div></nav>
 <section class="hero">
 <div class="hero-bg"></div><div class="hero-grid-lines"></div>
 <div class="hero-l">
-<div class="eyebrow fu1"><span class="ln"></span><span>Conformit&eacute; EU AI Act &middot; ISO 42001</span></div>
-<h1 class="fu2">La garde<br>souveraine de<br><em>vos agents IA.</em></h1>
-<p class="hero-sub fu3">TrustProtocol surveille, bloque et certifie cryptographiquement chaque action de vos agents IA en temps r&eacute;el. L&rsquo;infrastructure de gouvernance cryptographique pour agents IA.</p>
-<div class="hero-cta fu4"><a href="#cta" class="btn-p">Demander une d&eacute;mo &rarr;</a><a href="#demo" class="btn-o">Voir la d&eacute;mo live</a></div>
-<div class="hero-trust fu5"><span class="hero-trust-lbl">Conforme</span><div class="hero-badges"><span class="tbadge">EU AI Act</span><span class="tbadge">ISO 42001</span><span class="tbadge">SHA-256</span><span class="tbadge">SOC 2</span></div></div>
+<div class="eyebrow fu1"><span class="ln"></span><span data-en="EU AI Act Compliance · ISO 42001" data-fr="Conformité EU AI Act · ISO 42001">EU AI Act Compliance · ISO 42001</span></div>
+<h1 class="fu2" data-en="The sovereign<br>guardian of<br><em>your AI agents.</em>" data-fr="La garde<br>souveraine de<br><em>vos agents IA.</em>">The sovereign<br>guardian of<br><em>your AI agents.</em></h1>
+<p class="hero-sub fu3" data-en="TrustProtocol monitors, blocks, and cryptographically certifies every AI agent action in real time. The cryptographic governance infrastructure for AI agents." data-fr="TrustProtocol surveille, bloque et certifie cryptographiquement chaque action de vos agents IA en temps réel. L'infrastructure de gouvernance cryptographique pour agents IA.">TrustProtocol monitors, blocks, and cryptographically certifies every AI agent action in real time. The cryptographic governance infrastructure for AI agents.</p>
+<div class="hero-cta fu4"><a href="#cta" class="btn-p"><span data-en="Request a demo →" data-fr="Demander une démo →">Request a demo →</span></a><a href="#demo" class="btn-o"><span data-en="See live demo" data-fr="Voir la démo live">See live demo</span></a></div>
+<div class="hero-trust fu5"><span class="hero-trust-lbl" data-en="Compliant" data-fr="Conforme">Compliant</span><div class="hero-badges"><span class="tbadge">EU AI Act</span><span class="tbadge">ISO 42001</span><span class="tbadge">SHA-256</span><span class="tbadge">SOC 2</span></div></div>
 </div>
 <div class="hero-r">
 <div class="dash fu5">
@@ -1028,6 +1031,150 @@ function resetDemo(){
 </div>
 </div>
 
+
+<!-- ===== INTEGRATION SECTION ===== -->
+<div id="page-integration" style="display:none;position:fixed;inset:0;background:#FAFAF7;z-index:10000;overflow-y:auto">
+<div style="max-width:800px;margin:0 auto;padding:2rem">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid #E2DED5">
+    <div>
+      <h1 style="font-family:'Fraunces',serif;font-size:24px;font-weight:400" data-en="Integration Guide" data-fr="Guide d'intégration">Integration Guide</h1>
+      <p style="font-size:12px;font-family:'DM Mono',monospace;color:#8A847A;margin-top:4px" data-en="Integrate TrustProtocol in 15 minutes" data-fr="Intégrez TrustProtocol en 15 minutes">Integrate TrustProtocol in 15 minutes</p>
+    </div>
+    <button onclick="showPage('landing')" style="font-size:11px;font-family:'DM Mono',monospace;color:#8A847A;cursor:pointer;padding:6px 12px;border:1px solid #E2DED5;border-radius:2px;background:transparent" data-en="← Back" data-fr="← Retour">← Back</button>
+  </div>
+
+  <div style="font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.8;color:#16181A">
+
+    <!-- Step 1 -->
+    <div style="margin-bottom:2.5rem">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div style="width:28px;height:28px;background:#3B6E3F;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;flex-shrink:0">1</div>
+        <h2 style="font-family:'Fraunces',serif;font-size:18px;font-weight:400;color:#244A26" data-en="Get your API key" data-fr="Obtenez votre clé API">Get your API key</h2>
+      </div>
+      <p style="margin-bottom:12px;color:#8A847A" data-en="Contact us to get your API key. You'll receive it within 24 hours." data-fr="Contactez-nous pour obtenir votre clé API. Vous la recevrez sous 24h.">Contact us to get your API key. You'll receive it within 24 hours.</p>
+      <a href="mailto:contact@trustprotocol.tech" style="display:inline-block;padding:10px 20px;background:#3B6E3F;color:#fff;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;border-radius:2px;text-decoration:none" data-en="contact@trustprotocol.tech" data-fr="contact@trustprotocol.tech">contact@trustprotocol.tech</a>
+    </div>
+
+    <!-- Step 2 -->
+    <div style="margin-bottom:2.5rem">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div style="width:28px;height:28px;background:#3B6E3F;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;flex-shrink:0">2</div>
+        <h2 style="font-family:'Fraunces',serif;font-size:18px;font-weight:400;color:#244A26" data-en="Python integration" data-fr="Intégration Python">Python integration</h2>
+      </div>
+      <p style="margin-bottom:12px;color:#8A847A" data-en="Add 3 lines before each agent action:" data-fr="Ajoutez 3 lignes avant chaque action de votre agent :">Add 3 lines before each agent action:</p>
+      <pre style="background:#F1EFE9;border-radius:4px;padding:16px;font-family:'DM Mono',monospace;font-size:12px;overflow-x:auto;line-height:1.6">import requests
+
+def before_action(agent_id, action, cost):
+    r = requests.post(
+        "https://api.trustprotocol.tech/intercept",
+        headers={"x-api-key": "YOUR_API_KEY"},
+        json={
+            "agent_id": agent_id,
+            "action": action,
+            "cost_eur": cost
+        }
+    )
+    result = r.json()
+    if result["blocked"]:
+        return False  # Action blocked - budget exceeded
+    return True  # Action authorized and attested
+
+# Usage
+if before_action("my-agent", "Send email", 0.05):
+    send_email()  # Execute only if authorized</pre>
+    </div>
+
+    <!-- Step 3 -->
+    <div style="margin-bottom:2.5rem">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div style="width:28px;height:28px;background:#3B6E3F;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;flex-shrink:0">3</div>
+        <h2 style="font-family:'Fraunces',serif;font-size:18px;font-weight:400;color:#244A26" data-en="LangChain integration" data-fr="Intégration LangChain">LangChain integration</h2>
+      </div>
+      <pre style="background:#F1EFE9;border-radius:4px;padding:16px;font-family:'DM Mono',monospace;font-size:12px;overflow-x:auto;line-height:1.6">from langchain.tools import tool
+import requests
+
+TP_KEY = "YOUR_API_KEY"
+
+@tool
+def supervised_action(action: str, cost: float) -> str:
+    """Execute an action after TrustProtocol validation"""
+    r = requests.post(
+        "https://api.trustprotocol.tech/intercept",
+        headers={"x-api-key": TP_KEY},
+        json={"agent_id": "langchain-agent", 
+              "action": action, "cost_eur": cost}
+    )
+    data = r.json()
+    if data["blocked"]:
+        return f"Action blocked: {data.get('block_reason', 'Budget exceeded')}"
+    return f"Authorized. Attestation: {data['attestation_id']}"</pre>
+    </div>
+
+    <!-- Step 4 -->
+    <div style="margin-bottom:2.5rem">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div style="width:28px;height:28px;background:#3B6E3F;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;flex-shrink:0">4</div>
+        <h2 style="font-family:'Fraunces',serif;font-size:18px;font-weight:400;color:#244A26" data-en="cURL / REST API" data-fr="cURL / API REST">cURL / REST API</h2>
+      </div>
+      <pre style="background:#F1EFE9;border-radius:4px;padding:16px;font-family:'DM Mono',monospace;font-size:12px;overflow-x:auto;line-height:1.6">curl -X POST https://api.trustprotocol.tech/intercept \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"my-agent","action":"Send email","cost_eur":0.05}'
+
+# Response
+{
+  "attestation_id": "uuid-...",
+  "blocked": false,
+  "hash_sha256": "1decdde4...",
+  "signature": "RSA signature...",
+  "chain_height": 42
+}</pre>
+    </div>
+
+    <!-- API Reference -->
+    <div style="margin-bottom:2.5rem">
+      <h2 style="font-family:'Fraunces',serif;font-size:18px;font-weight:400;margin-bottom:16px;color:#244A26" data-en="API Reference" data-fr="Référence API">API Reference</h2>
+      <div style="border:1px solid #E2DED5;border-radius:4px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:120px 1fr 2fr;background:#F1EFE9;padding:8px 14px;font-family:'DM Mono',monospace;font-size:10px;color:#8A847A;text-transform:uppercase;letter-spacing:.06em">
+          <span>Method</span><span>Endpoint</span><span data-en="Description" data-fr="Description">Description</span>
+        </div>
+        <div style="display:grid;grid-template-columns:120px 1fr 2fr;padding:10px 14px;border-top:1px solid #E2DED5;font-size:12px">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;background:#EEF3E9;color:#3B6E3F;padding:2px 6px;border-radius:2px;height:fit-content">POST</span>
+          <span style="font-family:'DM Mono',monospace;font-size:11px">/intercept</span>
+          <span style="color:#8A847A" data-en="Intercept and attest an agent action" data-fr="Intercepter et attester une action">Intercept and attest an agent action</span>
+        </div>
+        <div style="display:grid;grid-template-columns:120px 1fr 2fr;padding:10px 14px;border-top:1px solid #E2DED5;font-size:12px">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;background:#E8F0FB;color:#2E5BAD;padding:2px 6px;border-radius:2px;height:fit-content">GET</span>
+          <span style="font-family:'DM Mono',monospace;font-size:11px">/ledger</span>
+          <span style="color:#8A847A" data-en="Get all attestations" data-fr="Obtenir toutes les attestations">Get all attestations</span>
+        </div>
+        <div style="display:grid;grid-template-columns:120px 1fr 2fr;padding:10px 14px;border-top:1px solid #E2DED5;font-size:12px">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;background:#E8F0FB;color:#2E5BAD;padding:2px 6px;border-radius:2px;height:fit-content">GET</span>
+          <span style="font-family:'DM Mono',monospace;font-size:11px">/budget/{id}</span>
+          <span style="color:#8A847A" data-en="Get agent budget status" data-fr="Statut budget d'un agent">Get agent budget status</span>
+        </div>
+        <div style="display:grid;grid-template-columns:120px 1fr 2fr;padding:10px 14px;border-top:1px solid #E2DED5;font-size:12px">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;background:#E8F0FB;color:#2E5BAD;padding:2px 6px;border-radius:2px;height:fit-content">GET</span>
+          <span style="font-family:'DM Mono',monospace;font-size:11px">/verify/{id}</span>
+          <span style="color:#8A847A" data-en="Verify an attestation" data-fr="Vérifier une attestation">Verify an attestation</span>
+        </div>
+        <div style="display:grid;grid-template-columns:120px 1fr 2fr;padding:10px 14px;border-top:1px solid #E2DED5;font-size:12px">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;background:#E8F0FB;color:#2E5BAD;padding:2px 6px;border-radius:2px;height:fit-content">GET</span>
+          <span style="font-family:'DM Mono',monospace;font-size:11px">/pubkey</span>
+          <span style="color:#8A847A" data-en="Get RSA public key" data-fr="Obtenir la clé publique RSA">Get RSA public key</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#EEF3E9;border-radius:4px;padding:1.5rem;margin-top:2rem">
+      <p style="font-size:13px;font-weight:600;margin-bottom:8px" data-en="Need help with integration?" data-fr="Besoin d'aide pour l'intégration ?">Need help with integration?</p>
+      <p style="font-size:13px;color:#8A847A;margin-bottom:12px" data-en="Our team can help you integrate TrustProtocol in your existing stack." data-fr="Notre équipe peut vous aider à intégrer TrustProtocol dans votre stack existant.">Our team can help you integrate TrustProtocol in your existing stack.</p>
+      <a href="mailto:contact@trustprotocol.tech" style="font-family:'DM Mono',monospace;font-size:11px;color:#3B6E3F">contact@trustprotocol.tech</a>
+    </div>
+  </div>
+</div>
+</div>
+
 <!-- ===== CGV SECTION ===== -->
 <div id="page-cgv" style="display:none;position:fixed;inset:0;background:#FAFAF7;z-index:10000;overflow-y:auto">
 <div style="max-width:800px;margin:0 auto;padding:2rem">
@@ -1080,7 +1227,7 @@ const API = 'https://api.trustprotocol.tech';
 
 // ===== ROUTING =====
 function showPage(page) {
-  ['landing','client','admin','cgv'].forEach(p => {
+  ['landing','client','admin','cgv','integration'].forEach(p => {
     const el = document.getElementById('page-' + p);
     if (el) el.style.display = (p === page) ? '' : 'none';
   });
@@ -1097,7 +1244,7 @@ function showPage(page) {
 // Handle hash routing
 function routeFromHash() {
   const h = location.hash.slice(1) || 'landing';
-  if (['client','admin','cgv'].includes(h)) showPage(h);
+  if (['client','admin','cgv','integration'].includes(h)) showPage(h);
   else showPage('landing');
 }
 window.addEventListener('hashchange', routeFromHash);
@@ -1542,6 +1689,30 @@ async function submitDemo() {
 document.addEventListener('DOMContentLoaded', function() {
   routeFromHash();
 });
+
+
+// ===== I18N =====
+var currentLang = 'en';
+function toggleLang() {
+  currentLang = currentLang === 'en' ? 'fr' : 'en';
+  document.getElementById('lang-toggle').textContent = currentLang === 'en' ? 'FR' : 'EN';
+  document.documentElement.lang = currentLang;
+  updateLang();
+}
+function updateLang() {
+  document.querySelectorAll('[data-en]').forEach(function(el) {
+    var text = el.getAttribute('data-' + currentLang);
+    if (text) {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = text;
+      } else if (el.children.length === 0) {
+        el.textContent = text;
+      } else {
+        el.innerHTML = text;
+      }
+    }
+  });
+}
 
 </script>
 
